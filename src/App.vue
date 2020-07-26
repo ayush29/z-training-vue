@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button @click="chosen_tab=1">overview</button>
+    <button @click="chosen_tab=0">order-online</button>
+    <button @click="chosen_tab=2">review</button>
+    <button @click="chosen_tab=3">menu</button>
+    <button @click="chosen_tab=3">photos</button>
+    <div id="app">
+      <leftbar :foods=foods v-if="chosen_tab==0"></leftbar>
+      <div v-else>
+        <h1>Section Under Maintenance</h1>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import leftbar from './components/leftbar.vue'
+import foodjson from './fooddata.json';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    leftbar
+  },
+  data() {
+      return{
+        chosen_tab : 0,
+        foods : foodjson
+      }
+    },
+  methods: {
+    fn2(){
+      alert("clicked2");
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+
 </style>

@@ -1,0 +1,246 @@
+<template>
+<div id = "app">
+    <div class='leftt'>
+        <ul class = 'slist'>
+            <li class = 'litem' v-for="foodclass in foods" :key="foodclass.class_id" @click="fn2(foodclass.class_id)" :class="{ active: (foodclass.class_id==cur_nav) }">{{foodclass.class_name}}</li>
+        </ul>
+    </div>
+    <div class = 'rlist'>
+        <div class = "obox" v-for="foodclass in foods" :key="foodclass.class_id">
+          <div class="headline"><h2>{{foodclass.class_name}}</h2></div>
+          <div class = "boxxer" v-for="item in foodclass.items" :key="item.id">
+            <img class ="ig" :src="item.item_image" :alt="item.id">
+            <div class = "info">
+              <h3>{{item.name}}</h3>
+              <span>★★★★☆ <span class = votes>(74 votes)</span> </span> <br>
+              <span class = price>₹{{item.item_cost}}</span><br><br>
+              <span class = press>{{item.desc}}</span>
+            </div>
+            <div class = "adder">
+              <button class = "add_btn" @click = 'fn1(item.name, item.item_cost)'> Add  <span class='rplus'> + </span></button><br>
+              <span class = "rsm">customizable</span>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+</template>
+
+<script>
+import debounce from 'lodash/debounce';
+export default {
+    name: "leftbar",
+    props: {
+        foods: {
+            type:Array
+        }
+    },
+    // mounted() {
+    //     window.addEventListener('scroll', this.handleScroll)
+    // },
+    data(){
+        return {
+            total : 0,
+            cart : [],
+            cur_nav : 0,
+            x : [],
+            y : [],
+        }
+    },
+    methods: {
+        fn1(item="defa", cost=0){
+            if(confirm("clicked \n" + item + "\ncost = rs " + cost))
+            {
+                this.total += cost;
+                this.cart.push({item, cost})
+            }
+            alert(this.cart );
+        },
+
+        handleScroll() {
+            let i=1;
+            for(i=1;i<4;i++)
+            {
+                let p = window.pageYOffset;
+                console.log(i +" "+ p + ' ' + this.y[i]);
+                if(p < this.y[i] && p > this.y[i-1])
+                {
+                    this.cur_nav = i-1;
+                }
+                else if(p > this.y[(this.y).length-1])
+                    this.cur_nav = 3;
+                else if(p==0) this.cur_nav = 0;
+            }
+            // console.log(window.pageYOffset);
+            // console.log(this.cur_nav);
+            
+        },
+
+        fn2(ind){
+            this.cur_nav = ind;
+            (this.x[ind]).scrollIntoView();
+        },
+
+        fn3() {
+            this.x = document.getElementsByClassName('obox');
+            let i=0;
+            for(i=0;i<(this.x).length;i++)
+                (this.y).push(this.x[i].offsetTop);
+            for(i=0;i<(this.y).length;i++)
+                console.log(this.y[i]);
+            
+        },
+       
+    },
+    mounted() {
+        this.fn3();
+    },
+    created() {   
+        this.fn3();     
+        this.handleDebouncedScroll = debounce(this.handleScroll, 100);
+        window.addEventListener('scroll', this.handleDebouncedScroll);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleDebouncedScroll);
+    },   
+}
+
+</script>
+
+<style scoped>
+    .slist{
+        list-style-type: none;
+        font-size: medium;
+        font-weight: 13px;
+        float: left;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    .active{
+        border-right: 3px solid red;
+        background-Image : linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,0.1));
+    }
+
+    .leftt{
+        position: sticky;
+        top: 0;
+        height: fit-content;
+        width: 22rem;
+        margin-right: 10px;
+        border-right: 3px solid;
+        border-image:linear-gradient(transparent, rgb(200,200,200), transparent) 2;
+    }
+
+    li{
+        margin: 0px;
+        padding: 0.8rem 2rem;
+        font-family: Okra,Helvetica,sans-serif;
+        color: rgb(28, 28, 28);
+        opacity: 80%;
+        font-weight: bolder;
+        cursor: pointer;
+        justify-content: left;
+    }
+
+    .boxxer{
+        padding-top: 0;
+        display: flex;
+        height: fit-content;
+        margin: 10px 0;
+        width: 100%;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+    }
+
+    .ig{
+        margin: 5px 10px 0 5px;
+        width: 125px;
+        height: 125px;
+        border-radius: 9px;
+    }
+
+    .rlist{
+        width: 100%;
+        position: sticky;
+        top:260px
+    }
+
+    .obox{
+        margin-left: 30px;
+        border-bottom: 3px solid grey;
+    }
+
+    .votes{
+        color : silver;
+    }
+    .press{
+        color : grey;
+        font-size: 17px;
+    }
+    .adder{
+        /* float: right; */
+        margin-right: 18px;
+    }
+    .add_btn{
+        width: 85px;
+        height: 32px;
+        border: 0.5px solid grey;
+        background-color: white;
+        border-radius: 9px;
+    }
+    .add_btn:focus{
+    outline: none;
+    }
+    .rsm{
+        color: red;
+        font-size: small;
+    }
+
+    .rplus{
+        display: inline;
+        color: red;
+        font-size: large;
+    }
+    .info{
+        /* display: inline-block; */
+        vertical-align: top;
+        margin: 0 10px 10px 10px;
+        width: 100%;
+        padding: 0;
+    }
+
+    h3{
+    padding: 0;
+    margin: 0;
+    }
+
+    .headline{
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    padding: 2px 0;
+    background-color: white;
+    }
+
+    #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    padding-top: 20px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    }
+
+    @media screen and (max-width: 450px){
+        .leftt{
+            width: 25%;
+        }
+        .slist{
+            font-size: smaller;
+        }
+    }
+</style>
