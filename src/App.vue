@@ -3,7 +3,7 @@
     <Login/>
     <Header/>
     <Main/>
-    <Footer/>    
+    <Footer/>
   </div>
 </template>
 
@@ -24,23 +24,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #root {
-  /*font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;*/
-
-  font-family: Okra,Helvetica,sans-serif;
-  display: block;
-  overflow: auto;
-  font-size: 62.5%;
-  font-weight: 300;
-  box-sizing: border-box;
-  margin: auto;
-  padding: 0px;
-
+    display: block;
+    overflow: auto;
+    box-sizing: border-box;
+    margin: auto;
+    padding: 0px;
 }
 </style>

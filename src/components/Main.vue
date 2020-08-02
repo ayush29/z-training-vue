@@ -87,15 +87,21 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .main{
+    font-size:1.6rem;
     position: relative;
     max-width: 110rem;
     max-height: initial;
-    margin: 1rem 3rem 0px;
+    margin: 1rem auto 0px;
 }
 
 #dir{
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+#dir span {
+    margin: 0px 7px;
+    color: lightgray;
 }
 #relatedInfo{
     border-top: 1px solid lightgray; 
@@ -126,17 +132,19 @@ div, p, span {
 a:link{
     text-decoration: none;    
 }
+
 a:visited{
     text-decoration: none;
 }
+
 a:hover{
     color: rgb(46, 45, 45);
 }
+
 a{
     text-decoration: none;
     color: #5a5858;
     opacity: 73%;
     transition: 0.2s;
 }
-
 </style>

@@ -6,9 +6,10 @@
         <div class="actionTab" title="Order" @click="tabSelected(1)">
             Order Online
         </div>
-        <div class="actionTab" title="Reviews" @click="tabSelected(2)">
+        <!-- <div class="actionTab" title="Reviews" @click="tabSelected(2)">
             Reviews
-        </div>
+        </div> -->
+        <router-link to='/reviews'>Reviews</router-link>
         <div class="actionTab" title="Menu" @click="tabSelected(3)">
             Menu
         </div>

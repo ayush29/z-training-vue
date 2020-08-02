@@ -1,9 +1,10 @@
 <template>
     <section id="embedHere">
         <!-- emebed html elements here, replace this div dynamically(default:overview)-->
-        <div :key="Tabs[selectedTab]">
+        <!-- <div :key="Tabs[selectedTab]">
             Embed {{Tabs[selectedTab]}} content here            
-        </div>
+        </div> -->
+        <router-view></router-view>
     </section>
 </template>
 
@@ -25,16 +26,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#embedHere div{
-    background-color: lightgray;
-}
 *{
     box-sizing: border-box;
 }
-section{
+/* section{
     display: block;
-}
-div{
+} */
+/* div{
     display: block;
     justify-content: center;
 }
@@ -56,5 +54,5 @@ a{
     color: #5a5858;
     opacity: 73%;
     transition: 0.2s;
-}
+} */
 </style>
