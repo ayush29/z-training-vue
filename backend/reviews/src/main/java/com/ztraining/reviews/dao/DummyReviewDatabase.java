@@ -9,7 +9,6 @@ import java.util.*;
 
 @Repository("dummyDB")
 public class DummyReviewDatabase implements ReviewDao{
-    private final static int REVIEWS_PER_PAGE = 2;
     private static List<Review> DB = new ArrayList<Review>(){  // add temporary reviews
         {
             try {
@@ -17,6 +16,11 @@ public class DummyReviewDatabase implements ReviewDao{
                 add(new Review(2, "review 2"));
                 add(new Review(3, "review 3"));
                 add(new Review(4, "review 4"));
+                add(new Review(5, "review 5"));
+                add(new Review(6, "review 6"));
+                add(new Review(7, "review 7"));
+                add(new Review(8, "review 8"));
+                add(new Review(9, "review 9"));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -55,26 +59,19 @@ public class DummyReviewDatabase implements ReviewDao{
     }
 
     @Override
-    public List<Review> getAllSortedPageReviews(String option, int pageNum) {
-        List<Review> sortedDB = getAllSortedReviews(option);
-        int totalNumPages = (int) Math.ceil((double) sortedDB.size()/(double) REVIEWS_PER_PAGE);
-        if(pageNum > totalNumPages) {
-            pageNum = 1;
-        }
-        int startInd = (pageNum - 1) * REVIEWS_PER_PAGE;
-        int endInd = Math.min(startInd + REVIEWS_PER_PAGE, sortedDB.size());
-        return sortedDB.subList(startInd, endInd);
+    public int getNumReviews() {
+        return DB.size();
     }
 
     @Override
-    public int addComment(UUID id, Comment comment) throws MalformedURLException {
+    public Comment addComment(UUID id, Comment comment) throws MalformedURLException {
         for (Review rev : DB) {
             if (rev.getId().equals(id)) {
                 rev.addComment(comment);
                 break;
             }
         }
-        return 0;
+        return comment;
     }
 
     @Override

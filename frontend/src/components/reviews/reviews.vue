@@ -23,11 +23,12 @@
                             </svg></i>
                 </a>
             </div>
-            <div class="page-num" @click="reviewsNumPage(1)">
-                <a href="#"><span>1</span></a>
-            </div>
-            <div class="page-num" @click="reviewsNumPage(2)">
-                <a href="#"><span>2</span></a>
+            <div class="page-num"
+                v-for="(pageNum, ind) in paginationPages"
+                :key="ind"
+                @click="reviewsNumPage(pageNum)" 
+                :class="{'active-page-num': pageNum === curPage}">
+                <a href="#"><span>{{ pageNum }}</span></a>
             </div>
             <div class="page-btn" id="rev-next-page-btn" @click="reviewsNextPage">
                 <a href="#" class="arrow">
@@ -63,92 +64,82 @@ export default {
     },
     data() {
         return {
+            sortOption: 'NewestFirst',
             curPage: 1,
-            curList: [],
-            list: [],
             reviewsList: [],
             reviewsPerPage: 2,
+            maxNumPages: 0,
         }
     },
     created() {
-        this.getReviews()
+        this.getReviews();
+        this.updateNumPages();
     },
     computed: {
-        totalPages() {
-            return Math.ceil(this.list.length / this.reviewsPerPage);
-        },
+        paginationPages() {
+            let paginationOptionsList = [];
+            if(this.curPage <= 1) {
+                for(let i = 1; i <= Math.min(3, this.maxNumPages); i++)
+                    paginationOptionsList.push(i);
+            } else if(this.curPage+1 > this.maxNumPages) {
+                for(let i = Math.max(this.maxNumPages-2, 1); i <= this.maxNumPages; i++)
+                    paginationOptionsList.push(i);
+            } else {
+                for(let i = this.curPage-1; i <= this.curPage+1; i++)
+                    paginationOptionsList.push(i);
+            }
+            return paginationOptionsList;
+        }
     },
     methods: {
-        getReviews() {
-            fetch(`http://localhost:8080/reviews/sort/NewestFirst`)
+        updateNumPages() {
+            fetch(`http://localhost:8080/reviews/numReviews`)
             .then(response => {
-                return response.text();
+                return response.json();
             })
             .then(data => {
-                this.reviewsList = JSON.parse(data);
-                for(let i = 1; i <= this.reviewsList.length; i++) {
-                    this.list.push(this.reviewsList[i-1].id);
-                }
-                console.log("list length after fetch", this.list.length);
+                this.maxNumPages = Math.ceil(data/this.reviewsPerPage);
             });
         },
-        HideReviews() {
-            console.log("before timeout", this.list.length, this.list);
-            // setTimeout(() => {
-            //     console.log("timeout of 4 sec done");
-            //     console.log("entered", this.list.length, this.list);
-            //     Array.from(this.list).forEach(revID => {
-            //         console.log(revID)
-            //         let elem = document.getElementById(revID);
-            //         elem.style.display = "none";
-            //     });
-            //  }, 4000);
-            
+        getReviews() {
+            fetch(`http://localhost:8080/reviews/sort/${this.sortOption}/${this.curPage}`)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                this.reviewsList = data;
+                this.updateNumPages();
+                this.checkPageButtons();
+            });
         },
         checkPageButtons() {
             let prevButton = document.getElementById("rev-prev-page-btn");
             let nextButton = document.getElementById("rev-next-page-btn");
             if (this.curPage === 1) prevButton.style.visibility = "hidden";
             else prevButton.style.visibility = "visible";
-            if (this.curPage === this.totalPages) nextButton.style.visibility = "hidden";
+            if (this.curPage === this.maxNumPages) nextButton.style.visibility = "hidden";
             else nextButton.style.visibility = "visible";
         },
-        loadReviews() {
-            this.HideReviews();
-            let start = (this.curPage - 1) * this.reviewsPerPage;
-            this.curList = this.list.slice(start, start + this.reviewsPerPage);
-            for (let revNum of this.curList) {
-                let elem = document.getElementById(revNum);
-                elem.style.display = "block";
-            }
-            this.checkPageButtons();
-        },
         reviewsNextPage() {
-            this.curPage = Math.min(this.totalPages, this.curPage + 1);
-            this.loadReviews();
+            this.curPage = Math.min(this.maxNumPages, this.curPage + 1);
+            this.getReviews();
         },
         //loads prev page of reviews
         reviewsPrevPage() {
             this.curPage = Math.max(1, this.curPage - 1);
-            this.loadReviews();
+            this.getReviews();
         },
         // loads the exact num page
         reviewsNumPage(num) {
-            this.curPage = num;
-            this.loadReviews();
+            this.curPage = Math.min(this.maxNumPages, Math.max(1, num));
+            this.getReviews();
         },
     },
     mounted() {
-        // this.loadReviews();
         EventBus.$on('changedOption', dataObj => {
             if(dataObj.name === 'sort-dropdown') {
-                fetch("http://localhost:8080/reviews/sort/" + dataObj.option.split(' ').join(''))
-                    .then(response => {
-                        return response.text();
-                    })
-                    .then(data => {
-                        this.reviewsList = JSON.parse(data);
-                    });
+                this.sortOption = dataObj.option;
+                this.getReviews();
             }
             //TODO: filter dropdown options
         })
@@ -204,6 +195,28 @@ export default {
 
 .page-num {
     cursor: pointer;
+}
+
+.page-num.active-page-num {
+    width: 1.5vw;
+    height: 1.5vw;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    background-color: rgb(17, 145, 153);
+    flex-shrink: 0;
+    -webkit-box-flex: 0;
+    flex-grow: 0;
+    border-radius: 50%;
+}
+
+.page-num.active-page-num > a {
+    color: rgb(255, 255, 255);
+
 }
 
 .page-num > a {

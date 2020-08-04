@@ -11,7 +11,7 @@ public interface ReviewDao {
     int addReview(Review review);
     List<Review> getAllReviews();
 
-    int addComment(UUID id, Comment text) throws MalformedURLException;
+    Comment addComment(UUID id, Comment text) throws MalformedURLException;
 
     int addLike(UUID id);
 
@@ -19,5 +19,5 @@ public interface ReviewDao {
 
     List<Review> getAllSortedReviews(String option);
 
-    List<Review> getAllSortedPageReviews(String option, int pageNum);
+    int getNumReviews();
 }

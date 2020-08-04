@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="review-number">
-                    <p>{{ rev.reviewRatingNum }}</p>
+                    <p>{{ rev.reviewRatingNum.toFixed(1) }}</p>
                 </div>
             </div>
             <div class="review-time">
@@ -195,7 +195,7 @@ export default {
                 method: 'post',
             })
             .then(response => {
-                return response.text();
+                return response.json();
             })
             .then(data => {
                 this.rev.reviewNumLikes = data;
@@ -218,23 +218,17 @@ export default {
                 },
                 body: JSON.stringify(commentObj),
             })
-            .then(() => {
-                this.getCommentList();
-            })
+            .then(response => {
+                return response.json();
+            }).then(data => {
+                this.rev.commentList.unshift(data);
+                this.rev.reviewNumComments++;
+            });
             this.commentText = '';
         },
         toggleCommentSection() {
             let commentsDiv = document.getElementById(`${this.rev.id}`).querySelector(`.comments-section`);
             commentsDiv.classList.toggle('hide-section');
-        },
-        getCommentList() {
-            fetch(`http://localhost:8080/reviews/comment/${this.rev.id}`).then(response => {
-                return response.text();
-            })
-            .then(data => {
-                this.rev.commentList = JSON.parse(data);
-                this.rev.reviewNumComments = this.rev.commentList.length;
-            });
         },
     },
 }

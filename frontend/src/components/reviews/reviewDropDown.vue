@@ -52,7 +52,7 @@ export default {
             this.curVal = val;
             EventBus.$emit('changedOption', {
                 name: this.obj.name,
-                option: val,
+                option: val.split(' ').join(''),
             });
         }
     },

@@ -14,6 +14,7 @@ import java.util.UUID;
 @Service
 public class ReviewService {
     private final ReviewDao reviewDao;
+    private final static int REVIEWS_PER_PAGE = 2;
 
     @Autowired
     public ReviewService(@Qualifier("dummyDB") ReviewDao reviewDao) {
@@ -33,10 +34,15 @@ public class ReviewService {
     }
 
     public List<Review> getAllSortedPageReviews(String option, int pageNum) {
-        return reviewDao.getAllSortedPageReviews(option, pageNum);
+        List<Review> sortedDB = getAllSortedReviews(option);
+        int totalNumPages = (int) Math.ceil((double) sortedDB.size()/(double) REVIEWS_PER_PAGE);
+        pageNum = Math.min(totalNumPages, Math.max(1, pageNum));
+        int startInd = (pageNum - 1) * REVIEWS_PER_PAGE;
+        int endInd = Math.min(startInd + REVIEWS_PER_PAGE, sortedDB.size());
+        return sortedDB.subList(startInd, endInd);
     }
 
-    public int addComment(UUID id, Comment comment) throws MalformedURLException {
+    public Comment addComment(UUID id, Comment comment) throws MalformedURLException {
         return reviewDao.addComment(id, comment);
     }
 
@@ -46,5 +52,9 @@ public class ReviewService {
 
     public int addLike(UUID id) {
         return reviewDao.addLike(id);
+    }
+
+    public int getNumReviews() {
+        return reviewDao.getNumReviews();
     }
 }
