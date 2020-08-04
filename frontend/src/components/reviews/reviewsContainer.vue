@@ -73,7 +73,7 @@ export default {
 <style>
 @font-face {
     font-family: metropolis;
-    src: url(metropolis.regular.otf);
+    src: url(../../../public/metropolis.regular.otf);
 }
 
 .reviews-container {

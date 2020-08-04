@@ -4,7 +4,7 @@
             <span>{{ curVal }}</span>
             <div class="dropdown-content">
                 <a href="#" v-for='(val, index) in obj.options' 
-                @click='curVal = val' :key='index' 
+                @click='changeCurVal(val)' :key='index' 
                 :class='{ chosen: curVal === val}'>{{ val }}</a>
             </div>
         </div>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import EventBus from "../../reviewEventBus";
 export default {
     name: 'ReviewDropDown',
     props: {
@@ -37,11 +38,6 @@ export default {
             required: true,
         },
     },
-    // computed: {
-    //     fillUrl() {
-    //         return '#arrow_svg' + this.obj.num;
-    //     }
-    // },
     data() {
         return {
             curVal: this.obj.options[0],
@@ -50,10 +46,15 @@ export default {
     methods: {
         toggleList() {
             let list = document.querySelector(`#${this.obj.name} > .dropdown-content`);
-            console.log(`#${this.obj.name} > .dropdown-content`, list.classList, list);
             list.classList.toggle('hide-section');
-            console.log(list.classList, list);
         },
+        changeCurVal(val) {
+            this.curVal = val;
+            EventBus.$emit('changedOption', {
+                name: this.obj.name,
+                option: val,
+            });
+        }
     },
     mounted() {
         let list = document.querySelector(`#${this.obj.name} > .dropdown-content`);

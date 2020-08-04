@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="detailed-reviews">
-            <Review v-for="(rev, index) in reviewsList" :key='index' :rev='rev'/>
+            <Review v-for="rev in reviewsList" :key='rev.id' :rev='rev'/>
         </div>
         <div class="pagination">
             <div class="page-btn" id="rev-prev-page-btn" @click="reviewsPrevPage">
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import EventBus from "../../reviewEventBus";
 import Review from './review';
 
 export default {
@@ -62,92 +63,15 @@ export default {
     },
     data() {
         return {
-            reviewsList: [{
-                num: 1,
-                profile: {
-                    img: 'https://b.zmtcdn.com/data/user_profile_pictures/3e8/b0000c8d0003578f54e63141373fe3e8.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                    name: 'Ajay Kanojiya 1',
-                    numReviews: 1,
-                    numFollowers: 0,
-                },
-                reviewRating: {
-                    ratingNum: 5.0,
-                    time: '5 hours ago',
-                },
-                reviewTags: ['biryani', 'delicious food'],
-                reviewText: 'Great taste 👍👍',
-                reviewStats: {
-                    numLikes: 0,
-                    numComments: 1,
-                },
-                reviewCommentsList: [{
-                    num: 1,
-                    img: 'https://b.zmtcdn.com/data/pictures/chains/5/312995/aa4fc3fc70d8e32772a724d6cbc55ab0_featured_v2.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                    username: 'Biryani by Kilo',
-                    userTag: 'Management',
-                    text: 'Come on man, this is great. Everyone has to try this once in their life. Hoping it survives the corona period',
-                }
-                ],
-            },
-            {
-                num: 2,
-                profile: {
-                    img: 'https://b.zmtcdn.com/data/user_profile_pictures/3e8/b0000c8d0003578f54e63141373fe3e8.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                    name: 'Ajay Kanojiya 2',
-                    numReviews: 1,
-                    numFollowers: 0,
-                },
-                reviewRating: {
-                    ratingNum: 5.0,
-                    time: '5 hours ago',
-                },
-                reviewTags: ['biryani', 'delicious food'],
-                reviewText: 'Great taste 👍👍',
-                reviewStats: {
-                    numLikes: 0,
-                    numComments: 1,
-                },
-                reviewCommentsList: [{
-                    num: 1,
-                    img: 'https://b.zmtcdn.com/data/pictures/chains/5/312995/aa4fc3fc70d8e32772a724d6cbc55ab0_featured_v2.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                    username: 'Biryani by Kilo',
-                    userTag: 'Management',
-                    text: 'Come on man, this is great. Everyone has to try this once in their life. Hoping it survives the corona period',
-                }
-                ],
-            },
-            {
-                num: 3,
-                profile: {
-                    img: 'https://b.zmtcdn.com/data/user_profile_pictures/3e8/b0000c8d0003578f54e63141373fe3e8.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                    name: 'Ajay Kanojiya 3',
-                    numReviews: 1,
-                    numFollowers: 0,
-                },
-                reviewRating: {
-                    ratingNum: 5.0,
-                    time: '5 hours ago',
-                },
-                reviewTags: ['biryani', 'delicious food'],
-                reviewText: 'Great taste 👍👍',
-                reviewStats: {
-                    numLikes: 0,
-                    numComments: 1,
-                },
-                reviewCommentsList: [{
-                    num: 1,
-                    img: 'https://b.zmtcdn.com/data/pictures/chains/5/312995/aa4fc3fc70d8e32772a724d6cbc55ab0_featured_v2.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                    username: 'Biryani by Kilo',
-                    userTag: 'Management',
-                    text: 'Come on man, this is great. Everyone has to try this once in their life. Hoping it survives the corona period',
-                }
-                ],
-            }],
             curPage: 1,
-            list: [1, 2, 3],
             curList: [],
+            list: [],
+            reviewsList: [],
             reviewsPerPage: 2,
         }
+    },
+    created() {
+        this.getReviews()
     },
     computed: {
         totalPages() {
@@ -155,11 +79,31 @@ export default {
         },
     },
     methods: {
+        getReviews() {
+            fetch(`http://localhost:8080/reviews/sort/NewestFirst`)
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                this.reviewsList = JSON.parse(data);
+                for(let i = 1; i <= this.reviewsList.length; i++) {
+                    this.list.push(this.reviewsList[i-1].id);
+                }
+                console.log("list length after fetch", this.list.length);
+            });
+        },
         HideReviews() {
-            for (let revNum of this.list) {
-                let elem = document.getElementById('review-' + revNum);
-                elem.style.display = "none";
-            }
+            console.log("before timeout", this.list.length, this.list);
+            // setTimeout(() => {
+            //     console.log("timeout of 4 sec done");
+            //     console.log("entered", this.list.length, this.list);
+            //     Array.from(this.list).forEach(revID => {
+            //         console.log(revID)
+            //         let elem = document.getElementById(revID);
+            //         elem.style.display = "none";
+            //     });
+            //  }, 4000);
+            
         },
         checkPageButtons() {
             let prevButton = document.getElementById("rev-prev-page-btn");
@@ -174,7 +118,7 @@ export default {
             let start = (this.curPage - 1) * this.reviewsPerPage;
             this.curList = this.list.slice(start, start + this.reviewsPerPage);
             for (let revNum of this.curList) {
-                let elem = document.getElementById('review-' + revNum);
+                let elem = document.getElementById(revNum);
                 elem.style.display = "block";
             }
             this.checkPageButtons();
@@ -195,7 +139,19 @@ export default {
         },
     },
     mounted() {
-        this.loadReviews();
+        // this.loadReviews();
+        EventBus.$on('changedOption', dataObj => {
+            if(dataObj.name === 'sort-dropdown') {
+                fetch("http://localhost:8080/reviews/sort/" + dataObj.option.split(' ').join(''))
+                    .then(response => {
+                        return response.text();
+                    })
+                    .then(data => {
+                        this.reviewsList = JSON.parse(data);
+                    });
+            }
+            //TODO: filter dropdown options
+        })
     }
 }
 </script>

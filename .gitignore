@@ -1,6 +1,6 @@
 .DS_Store
-node_modules
-/dist
+frontend/node_modules/
+frontend/dist
 
 # local env files
 .env.local
@@ -20,6 +20,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-.vscode/
-reviews/node_modules/
