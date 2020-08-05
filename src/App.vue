@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <overview v-bind:restaurant="restaurantData"></overview>
+    <!-- <p v-for="(x, index) in restaurantData.menu_image" :key="index" >{{x.id}}
+    </p> -->
+    <overview v-bind:restaurant="restaurantData" @add-image="addImage"></overview>
+    
   </div>
 </template>
 
 <script>
-import overview from './components/overview.vue'
+import overview from './components/overview/overview.vue';
+//import axios from 'axios';
 export default {
   name: 'App',
   components: {
@@ -18,11 +22,11 @@ export default {
         inImageTab: false,
         costForTwo: 700,
         whichImage:0,
-        menu_image:["https://b.zmtcdn.com/data/menus/995/312995/762c598d5b4906728c37c32acbb644bd.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A",
-        "https://b.zmtcdn.com/data/collections/ecec46ffb5bc20bebe0857c47f630fc5_1535354925.jpg",
-        "https://b.zmtcdn.com/data/pictures/chains/2/18363082/0b157d9edcbc932632582f9b91fa6936_featured_v2.jpg",
-        "https://b.zmtcdn.com/data/pictures/chains/2/18349892/c2033a3d75f4c54fad6b35410f583e5b_featured_v2.jpg"
-        ],
+        menu_image:[]//"",
+        //"https://b.zmtcdn.com/data/collections/ecec46ffb5bc20bebe0857c47f630fc5_1535354925.jpg",
+        //"https://b.zmtcdn.com/data/pictures/chains/2/18363082/0b157d9edcbc932632582f9b91fa6936_featured_v2.jpg",
+        //"https://b.zmtcdn.com/data/pictures/chains/2/18349892/c2033a3d75f4c54fad6b35410f583e5b_featured_v2.jpg"
+        ,
         cuisines:[
             "Biryani" , 
             "Mughlai" ,
@@ -43,9 +47,50 @@ export default {
             "Indoor Seating"
         ],
         address:"dekhna padega",
-      }
+        todos:[{
+          id: "naman",
+        }],
+      },
+    todos:[]
   } 
-  }
+
+  },
+  created(){
+    // done with get
+    fetch('http://localhost:9000/todos')
+    .then(response => response.json())
+    .then(json => {
+      this.restaurantData.menu_image = json;
+      console.log(json);
+      return json;
+    });
+
+    
+  },
+    
+  methods:{
+    //done with post
+    addImage(newImage){
+      console.log(newImage.image + "top");
+          const requestOptions = {
+          method: "POST",
+          headers:{"content-Type":"application/json"},
+          body: JSON.stringify(newImage) 
+        };
+
+        fetch('http://localhost:9000/todos' , requestOptions)
+        .then(response => response.json())
+        .then(json => {
+          this.restaurantData.menu_image.push(json);
+          console.log("it called");
+          console.log(json);
+          return json;
+        });
+        
+    }
+  },
+   
+
 }
 </script>
 
