@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id= "login" v-show="loginShow" class="modal">
+        <div id= "login" v-show="loginShow && authenticatedUser===null" class="modal">
             <div class="modalContent">
                 <div id ="modalHeader">
                     <h2>Login</h2>
@@ -8,26 +8,32 @@
                 </div>
                 <button id="continueWithGoogle">Continue with Google</button>
                 <hr>
-                <input type="text" id="loginEmailInput" placeholder="Email">
+                <form id="loginForm" @submit="loginSubmit">
+                <input type="text" id="loginEmailInput" v-model="existingUserCred.email" placeholder="Email">
+                <input type="password" id="loginPasswordInput" v-model="existingUserCred.password" placeholder="******">
                 <input type="submit" value="Login">
+                </form>
                 <hr>
-                <div>New to Zomato?<span id="newAccount" @click="signup">Create Account</span></div>
+                <div>New to Zomato?<span id="newAccount" @click="signupDisplay">Create Account</span></div>
             </div>
         </div>
-        <div id="signup" v-show="signupShow" class="modal">
+        <div id="signup" v-show="signupShow && authenticatedUser===null" class="modal">
             <div class="modalContent">
                 <div id="modalHeader">
                     <h2>Signup</h2>
                     <span class="close" @click="modalClose">&times;</span>
                 </div>
-                <input type="text" id="fullnameInput" placeholder="Full Name">
-                <input type="text" id="signupEmailInput" placeholder="Email">
-                <input type="tel" id="signupPhoneInput" placeholder="Phone">
+                <form id="signupForm" @submit="signupSubmit">
+                <input type="text" id="fullnameInput" v-model="newUser.name" placeholder="Full Name">
+                <input type="text" id="signupEmailInput" v-model="newUser.email" placeholder="Email">
+                <input type="tel" id="signupPhoneInput" v-model="newUser.phone" placeholder="Phone">
+                <input type="password" id="signupPasswordInput" v-model="newUser.password" placeholder="******">
                 <input type="submit" value="Create Account">
+                </form>
                 <hr>
                 <button id="continueWithGoogle">Continue with Google</button>
                 <hr>
-                <div>Already have an account?<span id="haveAccount" @click="login">Login</span></div>
+                <div>Already have an account?<span id="haveAccount" @click="loginDisplay">Login</span></div>
             </div>
         </div>
     </div>
@@ -35,13 +41,26 @@
 
 <script>
 import eventBus from '../EventBus.js'
+import AuthService from '../service/AuthService.js'
 
 export default {
   name: 'Login',
   data() { 
       return{
           loginShow: false,
-          signupShow: false
+          signupShow: false,
+          authenticatedUser: null,
+          newUser: {
+              name: '',
+              email: '',
+              phone: '',
+              password: ''
+          },
+          existingUserCred: {
+              email: '',
+              password: ''
+          }
+
         }
       
   },
@@ -50,18 +69,68 @@ export default {
           this.loginShow = false;
           this.signupShow = false;
       },
-      login() {
+      loginDisplay() {
           this.signupShow = false;
           this.loginShow = true;
       },
-      signup() {
+      signupDisplay() {
           this.loginShow = false;
           this.signupShow = true;
+      },
+      loginSubmit(){
+          AuthService.logIn(this.existingUserCred).then((res)=>{
+              this.authenticatedUser = res.data;
+              eventBus.$emit('success-auth',this.authenticatedUser);
+              alert('Welcome '+this.authenticatedUser.name);
+          });
+          
+          //need to reset form data binding variables
+        //   this.resetForm();
+        //   alert('after reset!');
+          this.loginShow = false;
+          this.signupShow = false;
+        //   if(this.authenticatedUser==null)
+        //   {
+        //       alert('Login Failed!');
+        //   }
+        //   else{          
+                // eventBus.$emit('success-auth',this.authenticatedUser);
+        //   }
+      },
+      signupSubmit(){
+          AuthService.signUp(this.newUser).then((res)=>{
+              this.authenticatedUser = res.data;
+              eventBus.$emit('success-auth',this.authenticatedUser);
+              alert('Welcome '+this.authenticatedUser.name);
+          });
+          
+          //need to reset form data binding variables
+        //   this.resetForm();
+          this.loginShow = false;
+          this.signupShow = false;
+        //   if(this.authenticatedUser==null)
+        //   {
+        //       alert('SignUp Failed!');
+        //   }
+        //   else{
+                // eventBus.$emit('success-auth',this.authenticatedUser);
+        //   }          
+      },
+      resetForm(){
+          for(let property in this.newUser)
+          {
+              property = '';
+          }
+          for(let property in this.existingUserCred)
+          {
+              property = '';
+          }
       }
   },
   mounted: function(){
-      eventBus.$on('login-event',()=>{this.login();});
-      eventBus.$on('signup-event',()=>{this.signup();});
+      eventBus.$on('login-modal-event',()=>{this.loginDisplay();});
+      eventBus.$on('signup-modal-event',()=>{this.signupDisplay();});
+      eventBus.$on('logout-event',()=>{this.authenticatedUser=null;});
   }
 }
 </script>
@@ -92,7 +161,10 @@ export default {
     padding: 30px;
     margin: 10rem 30rem 50rem;    
 }
-
+form{
+    display: flex;
+    flex-flow: column;
+}
 .close {
     color: #aaa;
     float: right;

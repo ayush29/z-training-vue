@@ -22,7 +22,7 @@
         </section>
         <!--add some buttons-->
         <section class="restroConnect">
-            <button type="button" class="reviewButton" @click="login">
+            <button type="button" class="reviewButton" @click="addReview">
                 Add Review
             </button>
             <a href="https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528" target="_blank" style="z-index: -1;">
@@ -30,7 +30,7 @@
                     Direction
                 </button>
             </a>
-            <button type="button" class="connectButton" @click="login">
+            <button type="button" class="connectButton" @click="saveBookmark">
                 Bookmark
             </button>
             <button type="button" class="connectButton">
@@ -44,10 +44,33 @@
 import eventBus from '../EventBus.js'
 export default {
   name: 'About',
-  methods: {
-      login(){
-          eventBus.$emit('login-event');
+  data(){
+      return{
+          authenticatedUser: null
       }
+
+  },
+  methods: {
+      saveBookmark(){
+          if(this.authenticatedUser == null){
+              eventBus.$emit('login-modal-event');
+          }
+          else{
+              alert('Feature coming soon!');
+          }
+      },
+      addReview(){
+          if(this.authenticatedUser == null){
+              eventBus.$emit('login-modal-event');
+          }
+          else{
+              alert('Feature coming soon!');
+          }
+      }
+  },
+  mounted: function(){
+      eventBus.$on('success-auth',(res)=>{this.authenticatedUser = res;});
+      eventBus.$on('logout-event',()=>{this.authenticatedUser = null;});
   }
 }
 </script>

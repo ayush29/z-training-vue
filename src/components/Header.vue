@@ -29,10 +29,7 @@
                     </div>
                 </li>
                 <li>
-                    <div id="loginOptions">
-                        <a href="#" @click="login">Login</a>
-                        <a href="#" @click="signup">Signup</a>
-                    </div>                                
+                    <UserAuth/>                               
                 </li>
             </ul>
         </nav>
@@ -42,16 +39,12 @@
 
 <script>
 import eventBus from '../EventBus.js'
+import UserAuth from '../components/UserAuth.vue'
+
 export default {
   name: 'Header',
-  methods: {
-      login(){
-          eventBus.$emit('login-event');
-      },
-
-      signup(){
-          eventBus.$emit('signup-event');
-      }
+  components:{
+      UserAuth
   }
 }
 </script>
@@ -127,16 +120,6 @@ header{
     border-bottom-right-radius: 0.8rem;
     margin-left: 0.5rem;
     background-color: lightpink;
-}
-
-#loginOptions{
-    display: flex; 
-    align-items: left; 
-    justify-content: space-evenly;
-}
-
-#loginOptions a{
-    padding-left: 2rem;
 }
 
 img{
