@@ -1,11 +1,12 @@
 <template>
-<div id = "app">
+<div id = "app1">
     <div class='leftt'>
         <ul class = 'slist'>
-            <li class = 'litem' v-for="foodclass in foods" :key="foodclass.class_id" @click="fn2(foodclass.class_id)" :class="{ active: (foodclass.class_id==cur_nav) }">{{foodclass.class_name}}</li>
+            <li class = 'litem' v-for="foodclass in foods" :key="foodclass.class_id" @click="nav_click(foodclass.class_id)" :class="{ active: (foodclass.class_id==cur_nav) }">{{foodclass.class_name}}</li>
         </ul>
+        <button class="cart" @click="showCart()" >Cart {{cart}}</button>
     </div>
-    <div class = 'rlist'>
+    <div v-if = "contentview" class = 'rlist'>
         <div class = "obox" v-for="foodclass in foods" :key="foodclass.class_id">
           <div class="headline"><h2>{{foodclass.class_name}}</h2></div>
           <div class = "boxxer" v-for="item in foodclass.items" :key="item.id">
@@ -17,11 +18,19 @@
               <span class = press>{{item.desc}}</span>
             </div>
             <div class = "adder">
-              <button class = "add_btn" @click = 'fn1(item.name, item.item_cost)'> Add  <span class='rplus'> + </span></button><br>
+              <button class = "add_btn" @click = "addToCart(item.name, item.item_cost, 1)"> Add  <span class='rplus'> + </span></button><br>
               <span class = "rsm">customizable</span>
             </div>
           </div>
         </div>
+    </div>
+    <div v-else class = "cartview">
+        <table style = "width:100%">
+            <tr> <td><h3>Item</h3></td> <td><h3>Quantity</h3></td> <td><h3>Rate</h3></td> <td><h3>Total</h3></td></tr>
+            <tr v-for="citem in cartitem" :key="citem.id"><td>{{citem.item}}</td> <td>{{citem.quantity}}</td> <td>{{citem.rate}}</td> <td>{{citem.total}}</td></tr>
+             <tr> <td></td> <td></td> <td></td> <td></td></tr>
+            <tr> <td><h3>Total Cost</h3></td> <td>{{cart}}</td> <td>-</td> <td><h3>{{tprice}}</h3></td></tr>
+        </table>
     </div>
 </div>
 </template>
@@ -30,33 +39,65 @@
 import debounce from 'lodash/debounce';
 export default {
     name: "leftbar",
-    props: {
-        foods: {
-            type:Array
-        }
-    },
-    // mounted() {
-    //     window.addEventListener('scroll', this.handleScroll)
-    // },
     data(){
         return {
-            total : 0,
-            cart : [],
+            cart : 0,
             cur_nav : 0,
             x : [],
             y : [],
+            foods : Object,
+            contentview : true,
+            cartitem : Object,
+            tprice : 0,
         }
     },
     methods: {
-        fn1(item="defa", cost=0){
-            if(confirm("clicked \n" + item + "\ncost = rs " + cost))
-            {
-                this.total += cost;
-                this.cart.push({item, cost})
-            }
-            alert(this.cart );
+        addToCart(item, rate, quant){
+            var bdata = {
+                "item" : item,
+                "rate" : rate,
+                "quantity": quant
+            };
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify(bdata);
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            fetch("http://localhost:9090/api/cart", requestOptions)
+            
+            requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            fetch("http://localhost:9090/api/cart", requestOptions)
+                .then(response => response.json())
+                .then(result => this.cart = result.length);
         },
 
+        showCart(){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            fetch("http://localhost:9090/api/cart", requestOptions)
+                .then(response => response.json())
+                .then(result => this.cartitem = result);
+
+            this.tprice=0;
+            for(let i=0; i<this.cartitem.length; i++)
+                this.tprice += this.cartitem[i].total;
+
+            if(this.contentview) this.contentview = false;
+            else this.contentview = true;
+        },
         handleScroll() {
             let i=1;
             for(i=1;i<4;i++)
@@ -70,13 +111,11 @@ export default {
                 else if(p > this.y[(this.y).length-1])
                     this.cur_nav = 3;
                 else if(p==0) this.cur_nav = 0;
-            }
-            // console.log(window.pageYOffset);
-            // console.log(this.cur_nav);
-            
+            }            
         },
 
-        fn2(ind){
+        nav_click(ind){
+            if(!this.contentview) this.contentview = true;
             this.cur_nav = ind;
             (this.x[ind]).scrollIntoView();
         },
@@ -88,15 +127,31 @@ export default {
                 (this.y).push(this.x[i].offsetTop);
             for(i=0;i<(this.y).length;i++)
                 console.log(this.y[i]);
-            
         },
+        fn2(){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            fetch("http://localhost:9090/api/fooddata", requestOptions)
+                .then(response => response.json())
+                .then(result => this.foods = result);
+                // .catch(error => console.log('error', error));
+            fetch("http://localhost:9090/api/cart", requestOptions)
+                .then(response => response.json())
+                .then(result => this.cart = result.length);
+        }
        
     },
     mounted() {
         this.fn3();
     },
     created() {   
-        this.fn3();     
+        this.fn2();
+        this.fn3();    
         this.handleDebouncedScroll = debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);
     },
@@ -109,6 +164,12 @@ export default {
 </script>
 
 <style scoped>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 8px;
+    }
+
     .slist{
         list-style-type: none;
         font-size: medium;
@@ -116,6 +177,11 @@ export default {
         float: left;
         margin-left: 0;
         padding-left: 0;
+    }
+
+    .cartview{
+        width: 50%;
+        padding-right: 40%;
     }
 
     .active{
@@ -216,23 +282,25 @@ export default {
     margin: 0;
     }
 
-    .headline{
-    position: sticky;
-    top: 0px;
-    width: 100%;
-    padding: 2px 0;
-    background-color: white;
+
+    #app1 {
+        position : sticky;
+        top : 0;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #2c3e50;
+        padding-top: 20px;
+        display: flex;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        width: 100%;
+        height: fit-content;
     }
 
-    #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-    padding-top: 20px;
-    display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
+    #topp {
+        position: sticky;
+        overflow : hidden;
     }
 
     @media screen and (max-width: 450px){
