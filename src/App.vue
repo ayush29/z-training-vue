@@ -57,7 +57,7 @@ export default {
   },
   created(){
     // done with get
-    fetch('http://localhost:9000/todos')
+    fetch('http://localhost:8080/restaurant/menu_image')
     .then(response => response.json())
     .then(json => {
       this.restaurantData.menu_image = json;
@@ -78,7 +78,7 @@ export default {
           body: JSON.stringify(newImage) 
         };
 
-        fetch('http://localhost:9000/todos' , requestOptions)
+        fetch('http://localhost:8080/restaurant/menu_image' , requestOptions)
         .then(response => response.json())
         .then(json => {
           this.restaurantData.menu_image.push(json);
