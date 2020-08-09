@@ -10,7 +10,7 @@
                 <hr>
                 <form id="loginForm" @submit="loginSubmit">
                 <input type="text" id="loginEmailInput" v-model="existingUserCred.email" placeholder="Email">
-                <input type="password" id="loginPasswordInput" v-model="existingUserCred.password" placeholder="******">
+                <input type="password"  id="loginPasswordInput" v-model="existingUserCred.password" placeholder="******">
                 <input type="submit" value="Login">
                 </form>
                 <hr>
@@ -82,6 +82,7 @@ export default {
               this.authenticatedUser = res.data;
               eventBus.$emit('success-auth',this.authenticatedUser);
               alert('Welcome '+this.authenticatedUser.name);
+            //   document.getElementById("loginForm").reset();
           });
           
           //need to reset form data binding variables
@@ -102,6 +103,7 @@ export default {
               this.authenticatedUser = res.data;
               eventBus.$emit('success-auth',this.authenticatedUser);
               alert('Welcome '+this.authenticatedUser.name);
+            //   document.getElementById("signupForm").reset();
           });
           
           //need to reset form data binding variables
@@ -116,16 +118,16 @@ export default {
                 // eventBus.$emit('success-auth',this.authenticatedUser);
         //   }          
       },
-      resetForm(){
-          for(let property in this.newUser)
-          {
-              property = '';
-          }
-          for(let property in this.existingUserCred)
-          {
-              property = '';
-          }
-      }
+    //   resetForm(){
+    //       for(let property in this.newUser)
+    //       {
+    //           property = '';
+    //       }
+    //       for(let property in this.existingUserCred)
+    //       {
+    //           property = '';
+    //       }
+    //   }
   },
   mounted: function(){
       eventBus.$on('login-modal-event',()=>{this.loginDisplay();});

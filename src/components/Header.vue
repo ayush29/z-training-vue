@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import eventBus from '../EventBus.js'
+// import eventBus from '../EventBus.js'
 import UserAuth from '../components/UserAuth.vue'
 
 export default {

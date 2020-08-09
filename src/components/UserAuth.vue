@@ -2,6 +2,7 @@
 <template>
   <div class="user">
     <div v-if="authenticatedUser!==null" id="logoutOption">
+        <div id="userImg"></div>
         <span>{{authenticatedUser.name}}</span>
         <a href="#" @click="logout">Logout</a>
     </div>
@@ -15,7 +16,7 @@
 <script>
 
 import eventBus from '../EventBus.js'
-import AuthService from '../service/AuthService.js'
+// import AuthService from '../service/AuthService.js'
 
 export default {
   name: 'UserAuth',
@@ -64,11 +65,22 @@ export default {
     align-items: left; 
     justify-content: space-evenly;
 }
-#logoutOption a{
+#logoutOption a,span{
     padding-left: 2rem;
 }
 #loginOptions a{
     padding-left: 2rem;
+}
+
+#userImg{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-image: url("https://b.zmtcdn.com/images/user_avatars/wine_2x.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
 }
 
 img{
