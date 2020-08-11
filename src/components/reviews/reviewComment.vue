@@ -1,15 +1,18 @@
 <template>
     <div class="comment-container">
         <div class="user-icon">
-            <img alt="image" :src="comment.img" loading="lazy">
+            <img alt="image" :src="comment.user.imgUrl" loading="lazy">
         </div>
         <div class="user-comment">
             <div class="comment-username">
-                <a href="#"><span>{{ comment.username }}</span></a>
-                <div class="comment-user-tag">{{ comment.userTag }}</div>
+                <a href="#"><span>{{ comment.user.name }}</span></a>
+                <!-- <div class="comment-user-tag">{{ comment.userTag }}</div> -->
             </div>
             <div class="comment-content">
                 <p>{{ comment.text }}</p>
+            </div>
+            <div class="review-time">
+                <p>{{ simpleCommentTime }}</p>
             </div>
         </div>
     </div>
@@ -24,6 +27,30 @@ export default {
             required: true,
         },
     },
+    computed: {
+        simpleCommentTime() {
+            let revTime = Date.parse(this.comment.createdTime);
+            let timeDiff = Date.now() - revTime;
+            if(timeDiff < 60*1000) {
+                return `${Math.floor(timeDiff/1000)} seconds ago`;
+            } else if(timeDiff >= 60*1000 && timeDiff < 60*60*1000) {
+                if(timeDiff < 2*60*1000) return `${Math.floor(timeDiff/60000)} minute ago`;
+                else return `${Math.floor(timeDiff/60000)} minutes ago`;
+            } else if(timeDiff >= 60*60*1000 && timeDiff < 24*60*60*1000) {
+                if(timeDiff < 2*60*60*1000) return `${Math.floor(timeDiff/(60*60*1000))} hour ago`;
+                else return `${Math.floor(timeDiff/(60*60*1000))} hours ago`;
+            } else if(timeDiff >= 24*60*60*1000 && timeDiff < 30*24*60*60*1000){
+                if(timeDiff < 2*24*60*60*1000) return `${Math.floor(timeDiff/(24*60*60*1000))} day ago`;
+                else return `${Math.floor(timeDiff/(24*60*60*1000))} days ago`;
+            }  else if(timeDiff >= 30*24*60*60*1000 && timeDiff < 12*30*24*60*60*1000){
+                if(timeDiff < 2*30*24*60*60*1000) return `${Math.floor(timeDiff/(30*24*60*60*1000))} month ago`;
+                else return `${Math.floor(timeDiff/(30*24*60*60*1000))} months ago`;
+            } else {
+                if(timeDiff < 2*12*30*24*60*60*1000) return `${Math.floor(timeDiff/(12*30*24*60*60*1000))} year ago`;
+                else return `${Math.floor(timeDiff/(12*30*24*60*60*1000))} years ago`;
+            }
+        },
+    }
 }
 </script>
 
@@ -89,4 +116,12 @@ export default {
     margin: 0px;
 }
 
+.review-time {
+    color: rgb(156, 156, 156);
+    font-size: 0.85rem;
+}
+
+.review-time p {
+    margin-bottom: 0px;
+}
 </style>

@@ -3,13 +3,13 @@
         <div class="profile">
             <div class="profile-details">
                 <a href="#" class="profile-pic">
-                    <img alt="image" height="50px" width="50px" :src="rev.profile.img" loading="lazy">
+                    <img alt="image" height="50px" width="50px" :src="rev.user.imgUrl" loading="lazy">
                 </a>
                 <div class="profile-name">
-                    <a href="#"><p>{{ rev.profile.name }}</p></a>
+                    <a href="#"><p>{{ rev.user.name }}</p></a>
                     <div class="profile-stats">
-                        <span class="profile-rev-fol">{{ rev.profile.numReviews }} reviews</span>
-                        <span class="profile-rev-fol followers">{{ rev.profile.numFollowers }} Followers</span>
+                        <span class="profile-rev-fol">{{ userNumReviews }} reviews</span>
+                        <!-- <span class="profile-rev-fol followers">{{ rev.user.numFollowers }} Followers</span> -->
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
             <div class="stars-and-number">
                 <div class="review-stars">
                     <div class="review-star" v-for="val in 5" :key="val">
-                        <i size="16" color="#CFCFCF"><svg xmlns="http://www.w3.org/2000/svg" :style="{fill: val > rev.reviewRatingNum ? '#CFCFCF': '#1C1C1C'}"
+                        <i size="16" color="#CFCFCF"><svg xmlns="http://www.w3.org/2000/svg" :style="{fill: val > rev.rating ? '#CFCFCF': '#1C1C1C'}"
                                 width="16" height="16" viewBox="0 0 20 20"
                                 aria-labelledby="icon-svg-title-StarBox icon-svg-desc-StarBox" role="img"
                                 class="rev-star-svg">
@@ -38,19 +38,19 @@
                     </div>
                 </div>
                 <div class="review-number">
-                    <p>{{ rev.reviewRatingNum.toFixed(1) }}</p>
+                    <p>{{ rev.rating.toFixed(1) }}</p>
                 </div>
             </div>
             <div class="review-time">
                 <p>{{ simpleReviewTime }}</p>
             </div>
         </div>
-        <div class="review-sign">
-            <i class="thumb-sign" size="12" color="#50B547">
+        <div class="review-sign" v-if="positiveReviewTags.length">
+            <i class="pos-thumb-sign" size="12" color="#50B547">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#50B547" width="12" height="12"
                     viewBox="0 0 20 20" aria-labelledby="icon-svg-title-ThumbUpFill icon-svg-desc-ThumbUpFill"
                     role="img">
-                    <linearGradient :id="'thumb_sign_svg' + rev.id" x1="0" x2="100%" y1="0" y2="0">
+                    <linearGradient :id="'pos_thumb_sign_svg' + rev.id" x1="0" x2="100%" y1="0" y2="0">
                         <stop offset="0" stop-color="#50B547"></stop>
                         <stop offset="100%" stop-color="#50B547"></stop>
                     </linearGradient>
@@ -59,16 +59,37 @@
                     <title>thumb-up-fill</title>
                     <path
                         d="M4.76 18.82c-0.011 0.515-0.425 0.929-0.939 0.94l-0.001 0h-2.86c-0 0-0 0-0 0-0.523 0-0.949-0.418-0.96-0.939l-0-0.001v-10.24c0-0.53 0.43-0.96 0.96-0.96v0h3.8zM19.3 7.5c-0.389-0.51-0.996-0.837-1.679-0.84h-3.581v-2.38c0.002-0.043 0.003-0.094 0.003-0.145 0-2.11-1.71-3.82-3.82-3.82-0.071 0-0.142 0.002-0.213 0.006l0.010-0c-0.001 0-0.003-0-0.004-0-0.369 0-0.674 0.278-0.715 0.637l-0 0.003c-0.275 1.592-0.602 2.946-1.005 4.266l0.065-0.246c-0.436 0.995-1.191 1.783-2.134 2.248l-0.026 0.012v11.18c1.094 0.648 2.374 1.118 3.739 1.332l0.061 0.008h4.52c0.092 0.010 0.198 0.016 0.306 0.016 1.36 0 2.509-0.899 2.888-2.134l0.006-0.021c0.787-1.819 1.508-3.994 2.044-6.241l0.056-0.279c0.116-0.372 0.184-0.8 0.184-1.243 0-0.877-0.263-1.693-0.713-2.373l0.010 0.016z"
-                        :style="{fill: 'url(\'#thumb_sign_svg\'' + rev.id + ')'}"></path>
+                        :style="{fill: 'url(\'#pos_thumb_sign_svg\'' + rev.id + ')'}"></path>
                 </svg>
             </i>
-            <p class="desc-sign">POSITIVE</p>
+            <p class="desc-sign-pos">POSITIVE</p>
         </div>
-        <div class="review-tags">
-            <p class="review-tag" v-for="(tag, ind) in rev.reviewTags" :key="ind">{{ tag }}</p>
+        <div class="review-tags" v-if="positiveReviewTags.length">
+            <p class="review-tag" v-for="(tag, ind) in positiveReviewTags" :key="ind">{{ tag.text }}</p>
         </div>
-        <p class="review-text">{{ rev.reviewText }}</p>
-        <p class="comment-stats">{{ rev.reviewNumLikes }} Likes, {{rev.reviewNumComments}} Comments</p>
+        <div class="review-sign" v-if="negativeReviewTags.length">
+            <i class="neg-thumb-sign" size="12" color="#D02A38">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#D02A38" width="12" height="12" viewBox="0 0 20 20" aria-labelledby="icon-svg-title-ThumbUpFill icon-svg-desc-ThumbUpFill" role="img">
+                <linearGradient :id="'neg_thumb_sign_svg' + rev.id" x1="0" x2="100%" y1="0" y2="0">
+                    <stop offset="0" stop-color="#D02A38"></stop>
+                    <stop offset="100%" stop-color="#D02A38"></stop>
+                </linearGradient>
+                <title id="icon-svg-title-ThumbUpFill">Thumb Up Fill icon</title>
+                <desc id="icon-svg-desc-ThumbUpFill">It is an icon with title Thumb Up Fill</desc>
+                <title>thumb-up-fill</title>
+                <path
+                    d="M4.76 18.82c-0.011 0.515-0.425 0.929-0.939 0.94l-0.001 0h-2.86c-0 0-0 0-0 0-0.523 0-0.949-0.418-0.96-0.939l-0-0.001v-10.24c0-0.53 0.43-0.96 0.96-0.96v0h3.8zM19.3 7.5c-0.389-0.51-0.996-0.837-1.679-0.84h-3.581v-2.38c0.002-0.043 0.003-0.094 0.003-0.145 0-2.11-1.71-3.82-3.82-3.82-0.071 0-0.142 0.002-0.213 0.006l0.010-0c-0.001 0-0.003-0-0.004-0-0.369 0-0.674 0.278-0.715 0.637l-0 0.003c-0.275 1.592-0.602 2.946-1.005 4.266l0.065-0.246c-0.436 0.995-1.191 1.783-2.134 2.248l-0.026 0.012v11.18c1.094 0.648 2.374 1.118 3.739 1.332l0.061 0.008h4.52c0.092 0.010 0.198 0.016 0.306 0.016 1.36 0 2.509-0.899 2.888-2.134l0.006-0.021c0.787-1.819 1.508-3.994 2.044-6.241l0.056-0.279c0.116-0.372 0.184-0.8 0.184-1.243 0-0.877-0.263-1.693-0.713-2.373l0.010 0.016z" 
+                    :style="{fill: 'url(\'#neg_thumb_sign_svg\'' + rev.id + ')'}">
+                </path>
+                </svg>
+            </i>
+            <p class="desc-sign-neg">NEGATIVE</p>
+        </div>
+        <div class="review-tags" v-if="negativeReviewTags.length">
+            <p class="review-tag" v-for="(tag, ind) in negativeReviewTags" :key="ind">{{ tag.text }}</p>
+        </div>
+        <p class="review-text">{{ rev.text }}</p>
+        <p class="comment-stats">{{ rev.likes }} Likes, {{ rev.comments.length }} Comments</p>
         <div class="cta">
             <div class="lcs" @click='likeReview'>
                 <i class="lcs-symbol" size="16" color="#828282">
@@ -141,13 +162,14 @@
             </div>
             <!-- existing comments section -->
             <div class="comments-list">
-                <ReviewComment v-for="(comment, ind) in rev.commentList" :key="ind" :comment='comment'/>
+                <ReviewComment v-for="(comment, ind) in rev.comments" :key="ind" :comment='comment'/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import EventBus from "../../reviewEventBus";
 import ReviewComment from './reviewComment';
 export default {
     name: 'Review',
@@ -162,7 +184,7 @@ export default {
     },
     computed: {
         simpleReviewTime() {
-            let revTime = Date.parse(this.rev.reviewRatingTime);
+            let revTime = Date.parse(this.rev.createdTime);
             let timeDiff = Date.now() - revTime;
             if(timeDiff < 60*1000) {
                 return `${Math.floor(timeDiff/1000)} seconds ago`;
@@ -183,34 +205,41 @@ export default {
                 else return `${Math.floor(timeDiff/(12*30*24*60*60*1000))} years ago`;
             }
         },
+
     },
     data() {
         return {
             commentText: '',
+            userNumReviews: 0,
+            userNumFollowers: 0,
+            numComments: 0,
+            positiveReviewTags: [],
+            negativeReviewTags: [],
         }
+    },
+    created() {
+        this.getUserNumReviews();
+        this.divideReviewTags();
     },
     methods: {
         likeReview() {
-            fetch(`http://localhost:8080/reviews/like/${this.rev.id}`, {
+            fetch(`http://localhost:8080/reviews/${this.rev.id}/likes`, {
                 method: 'post',
             })
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                this.rev.reviewNumLikes = data;
+                this.rev.likes = data;
             })
         },
         submitComment() {
             if (this.commentText === '') return;
             let commentObj = {
-                // num: this.rev.reviewCommentsList.length+1,
-                // img: 'https://b.zmtcdn.com/data/pictures/chains/5/312995/aa4fc3fc70d8e32772a724d6cbc55ab0_featured_v2.jpg?fit=around%7C100%3A100&amp;crop=100%3A100%3B%2A%2C%2A',
-                // username: 'Biryani by Kilo',
-                // userTag: 'Management',
                 text: this.commentText,
+                user_id: 1,
             }
-            fetch(`http://localhost:8080/reviews/comment/${this.rev.id}`, {
+            fetch(`http://localhost:8080/reviews/${this.rev.id}/comments`, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
@@ -221,8 +250,8 @@ export default {
             .then(response => {
                 return response.json();
             }).then(data => {
-                this.rev.commentList.unshift(data);
-                this.rev.reviewNumComments++;
+                this.rev.comments.unshift(data);  // add to starting of the comments list
+                this.numComments++;
             });
             this.commentText = '';
         },
@@ -230,6 +259,31 @@ export default {
             let commentsDiv = document.getElementById(`${this.rev.id}`).querySelector(`.comments-section`);
             commentsDiv.classList.toggle('hide-section');
         },
+        getUserNumReviews() {
+            fetch(`http://localhost:8080/reviews/user/${this.rev.user.id}/num-reviews`, {
+                method: 'get',
+            })
+            .then(response => {
+                return response.json();
+            }).then(data => {
+                this.userNumReviews = data;
+            });
+        },
+        divideReviewTags() {
+            this.positiveReviewTags = [];
+            this.negativeReviewTags = [];
+            this.rev.reviewTags.forEach(element => {
+                if(element.type === 'positive')
+                    this.positiveReviewTags.push(element);
+                else
+                    this.negativeReviewTags.push(element);
+            });
+        },
+    },
+    mounted() {
+        EventBus.$on('changeUserNumReviews', () => {
+            this.getUserNumReviews();
+        });
     },
 }
 </script>
@@ -326,19 +380,32 @@ export default {
     padding-bottom: 10px;
     justify-content: flex-start;
 }
-.thumb-sign {
+.pos-thumb-sign {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
     cursor: inherit;
 }
-.desc-sign {
+.neg-thumb-sign {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: inherit;
+    transform: rotate(180deg);
+}
+.desc-sign-pos {
     color: rgb(80, 181, 71);
+    padding-left: 5px;
+    margin: 0px;
+}
+.desc-sign-neg {
+    color: #D02A38;
     padding-left: 5px;
     margin: 0px;
 }
 .review-tags {
     display: inline-flex;
+    margin-bottom: 10px;
 }
 .review-tag {
     color: rgb(130, 130, 130);
@@ -434,6 +501,7 @@ export default {
 }
 .write-comment-input textarea:focus {
     border-color: rgb(17, 145, 153);
+    border-width: 0.12rem;
 }
 .write-comment-btn {
     display: flex;

@@ -7,7 +7,6 @@
             </div>
             <Reviews />
         </section>
-        
         <!-- rating experience sticky box -->
         <RatingExp />
     </div>
@@ -30,7 +29,13 @@ export default {
             {
                 num: 1,
                 name: 'filter-dropdown',
-                options: ['All Reviews', 'Following', 'Popular', 'Bloggers', 'My Reviews', 'Order Reviews']
+                options: ['All Reviews',
+                        //   'Following',
+                        //   'Popular',
+                        //   'Bloggers',
+                          'My Reviews',
+                        //   'Order Reviews'
+                          ]
             },
             {
                 num: 2,
@@ -71,6 +76,14 @@ export default {
 </script>
 
 <style>
+/* body, html {
+    margin: 0;
+    padding: 0;
+    font-size: 62.5%;
+    font-weight: 300;
+    box-sizing: border-box;
+} */
+
 @font-face {
     font-family: metropolis;
     src: url(../../../public/metropolis.regular.otf);
@@ -93,6 +106,7 @@ export default {
 
 #review-head {
     width: 100%;
+    /* font-size: 2.4rem; */
     font-size: 1.8rem;
     line-height: 1.6;
     color: rgb(28, 28, 28);
@@ -106,6 +120,7 @@ export default {
     -webkit-box-pack: justify;
     justify-content: space-between;
     font-weight: 100;
+    /* font-size: 1.8rem; */
     font-size: 1.1rem;
 }
 </style>

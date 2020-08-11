@@ -65,10 +65,11 @@ export default {
     data() {
         return {
             sortOption: 'NewestFirst',
+            filterOption: 'AllReviews',
             curPage: 1,
             reviewsList: [],
             reviewsPerPage: 2,
-            maxNumPages: 0,
+            maxPages: 0,
         }
     },
     created() {
@@ -79,10 +80,10 @@ export default {
         paginationPages() {
             let paginationOptionsList = [];
             if(this.curPage <= 1) {
-                for(let i = 1; i <= Math.min(3, this.maxNumPages); i++)
+                for(let i = 1; i <= Math.min(3, this.maxPages); i++)
                     paginationOptionsList.push(i);
-            } else if(this.curPage+1 > this.maxNumPages) {
-                for(let i = Math.max(this.maxNumPages-2, 1); i <= this.maxNumPages; i++)
+            } else if(this.curPage+1 > this.maxPages) {
+                for(let i = Math.max(this.maxPages-2, 1); i <= this.maxPages; i++)
                     paginationOptionsList.push(i);
             } else {
                 for(let i = this.curPage-1; i <= this.curPage+1; i++)
@@ -93,35 +94,36 @@ export default {
     },
     methods: {
         updateNumPages() {
-            fetch(`http://localhost:8080/reviews/numReviews`)
+            fetch(`http://localhost:8080/reviews/user/3/filter/${this.filterOption}/num-reviews`)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                this.maxNumPages = Math.ceil(data/this.reviewsPerPage);
+                this.maxPages = Math.ceil(data/this.reviewsPerPage);
+                this.checkPageButtons();
             });
         },
         getReviews() {
-            fetch(`http://localhost:8080/reviews/sort/${this.sortOption}/${this.curPage}`)
+            fetch(`http://localhost:8080/reviews/user/3/filter/${this.filterOption}/sort/${this.sortOption}/page/${this.curPage}`)
             .then(response => {
                 return response.json();
             })
             .then(data => {
                 this.reviewsList = data;
                 this.updateNumPages();
-                this.checkPageButtons();
             });
         },
         checkPageButtons() {
+            console.log("max pages = ", this.maxPages, this.curPage);
             let prevButton = document.getElementById("rev-prev-page-btn");
             let nextButton = document.getElementById("rev-next-page-btn");
             if (this.curPage === 1) prevButton.style.visibility = "hidden";
             else prevButton.style.visibility = "visible";
-            if (this.curPage === this.maxNumPages) nextButton.style.visibility = "hidden";
+            if (this.curPage === this.maxPages) nextButton.style.visibility = "hidden";
             else nextButton.style.visibility = "visible";
         },
         reviewsNextPage() {
-            this.curPage = Math.min(this.maxNumPages, this.curPage + 1);
+            this.curPage = Math.min(this.maxPages, this.curPage + 1);
             this.getReviews();
         },
         //loads prev page of reviews
@@ -131,7 +133,7 @@ export default {
         },
         // loads the exact num page
         reviewsNumPage(num) {
-            this.curPage = Math.min(this.maxNumPages, Math.max(1, num));
+            this.curPage = Math.min(this.maxPages, Math.max(1, num));
             this.getReviews();
         },
     },
@@ -139,10 +141,17 @@ export default {
         EventBus.$on('changedOption', dataObj => {
             if(dataObj.name === 'sort-dropdown') {
                 this.sortOption = dataObj.option;
-                this.getReviews();
             }
-            //TODO: filter dropdown options
-        })
+            else if(dataObj.name === 'filter-dropdown') {
+                this.filterOption = dataObj.option;
+            }
+            this.getReviews();
+        });
+        EventBus.$on('submittedNewReview', dataObj => {
+            this.reviewsList.unshift(dataObj);
+            this.updateNumPages();
+            EventBus.$emit('changeUserNumReviews');
+        });
     }
 }
 </script>

@@ -16,13 +16,13 @@
                     aria-labelledby="icon-svg-title-DownTriangle icon-svg-desc-DownTriangle" role="img"
                     data-darkreader-inline-fill=""
                     style="--darkreader-inline-fill:#d3ccc1;">
-                    <linearGradient id="arrow_svg" x1="0" x2="100%" y1="0" y2="0">
+                    <linearGradient :id="'arrow_svg' + obj.num" x1="0" x2="100%" y1="0" y2="0">
                         <stop offset="0" stop-color="#B5B5B5"></stop>
                         <stop offset="100%" stop-color="#B5B5B5"></stop>
                     </linearGradient>
                     <title id="icon-svg-title-DownTriangle">Down Triangle icon</title>
                     <desc id="icon-svg-desc-DownTriangle">It is an icon with title Down Triangle</desc>
-                    <path d="M20 5.42l-10 10-10-10h20z" fill="url(#arrow_svg)"></path>
+                    <path d="M20 5.42l-10 10-10-10h20z" :style="{fill: 'url(\'#arrow_svg\'' + obj.num + ')'}"></path>
                 </svg></i></span>
         </div>
     </div>
