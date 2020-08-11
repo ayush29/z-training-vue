@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import Login from './components/Login.vue'
-import Header from './components/Header.vue'
-import Main from './components/Main.vue'
-import Footer from './components/Footer.vue'
+import Login from './components/main/Login.vue'
+import Header from './components/main/Header.vue'
+import Main from './components/main/Main.vue'
+import Footer from './components/main/Footer.vue'
 
 export default {
   name: 'App',
@@ -34,8 +34,6 @@ export default {
   margin-top: 60px;*/
 
   font-family: Okra,Helvetica,sans-serif;
-  display: block;
-  overflow: auto;
   font-size: 62.5%;
   font-weight: 300;
   box-sizing: border-box;

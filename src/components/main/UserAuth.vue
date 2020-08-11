@@ -1,4 +1,3 @@
-
 <template>
   <div class="user">
     <div v-if="authenticatedUser!==null" id="logoutOption">

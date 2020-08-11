@@ -68,10 +68,10 @@
 </template>
 
 <script>
-import Gallery from '../components/Gallery.vue'
-import About from '../components/About.vue'
-import Actions from '../components/Actions.vue'
-import Embed from '../components/Embed.vue'
+import Gallery from './Gallery.vue'
+import About from './About.vue'
+import Actions from './Actions.vue'
+import Embed from './Embed.vue'
 
 export default {
   name: 'Main',

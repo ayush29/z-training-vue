@@ -1,36 +1,48 @@
 <template>
     <section id="embedHere">
         <!-- emebed html elements here, replace this div dynamically(default:overview)-->
-        <div :key="Tabs[selectedTab]">
-            Embed {{Tabs[selectedTab]}} content here            
+        <div :key="selectedTab">
+            <component :is="Tabs[selectedTab]">{{Tabs[selectedTab]}}</component>
         </div>
     </section>
 </template>
 
 <script>
 import eventBus from '../EventBus.js'
+import OnlineOrder from '../onlineOrder/Online_order.vue'
+import Photos from '../photos/Photos.vue'
+import Menu from '../menu/Menu.vue'
+import Reviews from '../reviews/Reviews.vue'
+import Overview from '../overview/Overview.vue'
 export default {
   name: 'Embed',
   data(){
       return {
-          Tabs: ['overview', 'order-online', 'reviews', 'menu', 'photos'],
+          Tabs: [Overview, OnlineOrder, Reviews, Menu, Photos],
           selectedTab: 0
       }
   },
   mounted: function(){
       eventBus.$on('action-tab-selection',(tabIndex)=>{this.selectedTab=tabIndex;});
+  },
+  components:{
+      OnlineOrder,
+      Photos,
+      Overview,
+      Reviews,
+      Menu
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#embedHere div{
+/* #embedHere div{
     background-color: lightgray;
 }
 *{
     box-sizing: border-box;
-}
+} */
 section{
     display: block;
 }

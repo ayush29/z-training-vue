@@ -39,7 +39,7 @@
 
 <script>
 // import eventBus from '../EventBus.js'
-import UserAuth from '../components/UserAuth.vue'
+import UserAuth from './UserAuth.vue'
 
 export default {
   name: 'Header',
