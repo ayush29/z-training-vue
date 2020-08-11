@@ -1,5 +1,5 @@
 <template>
-    <div>
+  <div>
     <section class="sc-fHSTwm keHlyb"></section>
 
     <footer class="elhb8j-20 bWAMuJ">
@@ -177,13 +177,14 @@
   </div>
 </template>
 
+
+
 <script>
 export default {
-  name: 'Footer',
+  name: 'FooterComp'
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 
@@ -644,4 +645,3 @@ export default {
 
 
 </style>
-
