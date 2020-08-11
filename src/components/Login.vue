@@ -111,7 +111,8 @@ export default {
               alert('Welcome '+this.authenticatedUser.name);
               this.resetForm();
               this.startLoginSession();
-          }).catch(()=>{
+          }).catch((err)=>{
+              alert(err);
               alert('Signup Failed!');
               this.resetForm();
           });
