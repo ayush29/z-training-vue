@@ -15,7 +15,7 @@
 <script>
 
 import eventBus from '../EventBus.js'
-// import AuthService from '../service/AuthService.js'
+import AuthService from '../service/AuthService.js'
 
 export default {
   name: 'UserAuth',
@@ -41,12 +41,39 @@ export default {
           eventBus.$emit('signup-modal-event');
       },
       logout(){
+          AuthService.logOut(this.authenticatedUser.id);
+        //   this.$session.destroy();
           this.authenticatedUser = null;
           eventBus.$emit('logout-event');
+          this.closeLoginSession();
+      },
+      closeLoginSession(){
+          localStorage.isLoggedIn = false;
+          if(localStorage.getItem('authenticatedUser'))
+          {
+              localStorage.removeItem('authenticatedUser');
+          }
       }
   },
+//   beforeCreate: function(){
+//       if(localStorage.isLoggedIn)
+//       {
+//           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+//       }
+//   },
   mounted: function(){
       eventBus.$on('success-auth',(res)=>{this.authenticatedUser = res;});
+      if(localStorage.isLoggedIn)
+      {
+          this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+      }
+    //   if(this.$session.exists() && this.$session.get('isUserLoggedIn')) //if session initialised and user is currently logged in
+    //   {
+    //       this.authenticatedUser = this.$session.get('authenticatedUser');
+    //   }
+    //   else{
+    //       this.authenticatedUser = null;
+    //   }
   }
 }
 </script>

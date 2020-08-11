@@ -68,9 +68,26 @@ export default {
           }
       }
   },
+//   beforeCreate: function(){
+//       if(localStorage.isLoggedIn)
+//       {
+//           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+//       }
+//   },
   mounted: function(){
+    //   if(this.$session.exists() && this.$session.get('isUserLoggedIn')) //if session initialised and user is currently logged in
+    //   {
+    //       this.authenticatedUser = this.$session.get('authenticatedUser');
+    //   }
+    //   else{
+    //       this.authenticatedUser = null;
+    //   }
       eventBus.$on('success-auth',(res)=>{this.authenticatedUser = res;});
       eventBus.$on('logout-event',()=>{this.authenticatedUser = null;});
+      if(localStorage.isLoggedIn)
+      {
+          this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+      }
   }
 }
 </script>
