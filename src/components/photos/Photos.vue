@@ -39,6 +39,12 @@
 
             </div>
             <p class="imageCaption">Showing image {{openImageIndex+1}} of {{currentImgList.length}}</p>
+            <p class="imageCaption">Uploaded by {{currUserName}}</p>
+            <div @click="addLikeDislike('like')"> Like ({{likes}})</div>
+            <div @click="addLikeDislike('dislike')"> Dislike ({{dislikes}})</div>
+
+
+            
 
                 
 
@@ -51,7 +57,7 @@
 <script>
 
 import PhotosDataService from '../service/PhotosDataService';
-import AddPhoto from './AddPhoto.vue'
+import AddPhoto from './AddPhoto.vue';
 
 export default {
   name: 'Photos',
@@ -87,19 +93,52 @@ export default {
           openImageIndex: 0,
           popupImage: null,
           photosRefreshKey: 0,
+          currUserName:null,
+          likes:0,
+          dislikes:0,
+
 
         
       }
     },
     methods: {
         refreshPhotos(catcode) {
-            this.CATEGORY = catcode
+            this.CATEGORY = catcode;
             PhotosDataService.retrieveAllPhotos(this.CATEGORY) //HARDCODED
                 .then(response => {
                 this.currentImgList = response.data;
                 // console.log(response.data);
                 });
+            
         },
+        getUserName(userid) {
+            // this.CATEGORY = catcode
+            PhotosDataService.retrieveUserDetails(userid) //HARDCODED
+                .then(response => {
+                this.currUserName = response.data.name;
+                // console.log(response.data);
+                });
+
+        },
+        updateOpenImgData(){
+            this.getUserName(this.currentImgList[this.openImageIndex].userID);
+            this.likes = this.currentImgList[this.openImageIndex].likes;
+            this.dislikes = this.currentImgList[this.openImageIndex].dislikes;
+        },
+
+        addLikeDislike(button) {
+            // this.CATEGORY = catcode
+            PhotosDataService.updateLikesDislikes(this.currentImgList[this.openImageIndex].id, button) //HARDCODED
+                .then(result => {
+                    console.log('success', result);
+                    this.refreshPhotos(this.CATEGORY);
+                }).catch(error => {
+                    alert("Error Updating likes/dislikes! Please retry.");
+                    console.log(error.response);
+                });
+                this.updateOpenImgData();
+        },
+
         emitRefreshPhotos () {
             // this.$emit('refresh-photos-main');
             this.forceRerender();
@@ -109,6 +148,7 @@ export default {
                 this.popupImage = imgLink;
                 this.openImageIndex = pIndex;
                 document.querySelector(".modalShowPhoto").classList.remove('hide');
+                this.updateOpenImgData();
         },
         hideModal(){
             // photosModal = document.querySelector(".modalPhoto");
@@ -119,19 +159,26 @@ export default {
             this.openImageIndex = (this.openImageIndex-1)%(this.currentImgList.length);
             this.openImageIndex = (this.openImageIndex<0) ? (this.openImageIndex + this.currentImgList.length) : this.openImageIndex;
             this.popupImage = this.currentImgList[this.openImageIndex].link;
+            this.updateOpenImgData();
+            
+            
+
         },
         nextPhoto(){
             // photosModal = document.querySelector(".modalPhoto");
             this.openImageIndex = (this.openImageIndex+1)%(this.currentImgList.length);
             this.popupImage = this.currentImgList[this.openImageIndex].link;
+            this.updateOpenImgData();
+
+
         },
         forceRerender() {
             this.photosRefreshKey = !(this.photosRefreshKey);
             this.refreshPhotos(this.CATEGORY);
             // this.renderComponent = true;
-    }
+        }
         
-      },
+    },
     
     // computed: {
     //     imagesList(){
@@ -176,8 +223,9 @@ export default {
 }
 
 .modalBoxContainer{
+    margin: auto;
     display: flex;
-    padding: 5%;
+    padding: 5% 5% 0% 5%;
     justify-content: center;
     align-items: center;
     height: 75%; /* Full height */
