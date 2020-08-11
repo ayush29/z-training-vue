@@ -13,10 +13,10 @@ class AuthService {
        return axios.post(`${API_BASE_URL}/user/login`,userCredentials)
     }
 
-    // logOut()
-    // {
-
-    // }
+    logOut(userId)
+    {
+       return axios.put(`${API_BASE_URL}/user/${userId}/logout`);
+    }
 
     // getUserDetails()
     // {

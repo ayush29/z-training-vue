@@ -64,6 +64,9 @@ export default {
         }
       
   },
+  computed:{
+
+  },
   methods:{
       modalClose() {
           this.loginShow = false;
@@ -79,60 +82,83 @@ export default {
       },
       loginSubmit(){
           AuthService.logIn(this.existingUserCred).then((res)=>{
+            //   this.$session.start();
+            //   this.$session.set('isUserLoggedIn',true);
+            //   this.$session.set('authenticatesUser',res.data);
               this.authenticatedUser = res.data;
               eventBus.$emit('success-auth',this.authenticatedUser);
               alert('Welcome '+this.authenticatedUser.name);
-            //   document.getElementById("loginForm").reset();
+              this.resetForm();
+              this.startLoginSession();
+          }).catch((err)=>{
+              alert(err);
+              alert('Login Failed!');
+              this.resetForm();
+
           });
-          
-          //need to reset form data binding variables
-        //   this.resetForm();
-        //   alert('after reset!');
+
           this.loginShow = false;
           this.signupShow = false;
-        //   if(this.authenticatedUser==null)
-        //   {
-        //       alert('Login Failed!');
-        //   }
-        //   else{          
-                // eventBus.$emit('success-auth',this.authenticatedUser);
-        //   }
+
       },
       signupSubmit(){
           AuthService.signUp(this.newUser).then((res)=>{
+            //   this.$session.start();
+            //   this.$session.set('isUserLoggedIn',true);
+            //   this.$session.set('authenticatesUser',res.data);
               this.authenticatedUser = res.data;
               eventBus.$emit('success-auth',this.authenticatedUser);
               alert('Welcome '+this.authenticatedUser.name);
-            //   document.getElementById("signupForm").reset();
+              this.resetForm();
+              this.startLoginSession();
+          }).catch(()=>{
+              alert('Signup Failed!');
+              this.resetForm();
           });
-          
-          //need to reset form data binding variables
-        //   this.resetForm();
+
           this.loginShow = false;
-          this.signupShow = false;
-        //   if(this.authenticatedUser==null)
-        //   {
-        //       alert('SignUp Failed!');
-        //   }
-        //   else{
-                // eventBus.$emit('success-auth',this.authenticatedUser);
-        //   }          
+          this.signupShow = false;       
       },
-    //   resetForm(){
-    //       for(let property in this.newUser)
-    //       {
-    //           property = '';
-    //       }
-    //       for(let property in this.existingUserCred)
-    //       {
-    //           property = '';
-    //       }
-    //   }
+      startLoginSession()
+      {
+          if(this.authenticatedUser!==null)
+          {
+              localStorage.isLoggedIn = true;
+              localStorage.setItem('authenticatedUser', JSON.stringify(this.authenticatedUser));
+          }
+      },
+      resetForm(){
+          this.newUser.name= '';
+          this.newUser.email= '';
+          this.newUser.phone= '';
+          this.newUser.password= '';
+
+          this.existingUserCred.email = '';
+          this.existingUserCred.password = '';
+          
+      }
   },
+//   beforeCreate: function(){
+//       if(localStorage.isLoggedIn)
+//       {
+//           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+//       }
+//   },
   mounted: function(){
       eventBus.$on('login-modal-event',()=>{this.loginDisplay();});
       eventBus.$on('signup-modal-event',()=>{this.signupDisplay();});
       eventBus.$on('logout-event',()=>{this.authenticatedUser=null;});
+      if(localStorage.isLoggedIn)
+      {
+          this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+      }
+    //   if(this.$session.exists() && this.$session.get('isUserLoggedIn')) //if session initialised and user is currently logged in
+    //   {
+    //       this.authenticatedUser = this.$session.get('authenticatedUser');
+    //   }
+    //   else{
+    //       this.authenticatedUser = null;
+    //   }
   }
 }
 </script>
