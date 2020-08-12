@@ -186,6 +186,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
+footer {
+    position: relative;
+    z-index: -1;
+}
 
 @media (max-width: 900px) and (min-width: 768px)
 {.bWAMuJ {
@@ -260,7 +264,7 @@ export default {
     width: 2.1rem;
     height: 2.3rem;
     transform: rotate(45deg);
-    z-index: 11;
+    /* z-index: 11; */
     border-radius: 2.2rem 0px 0.4rem;
     background: rgb(255, 255, 255);
 }
@@ -280,7 +284,7 @@ export default {
     transition-property: opacity, padding;
     will-change: opacity, padding;
     transition-duration: 0.25s;
-    z-index: 10;
+    /* z-index: 10; */
     border-radius: 0.6rem;
     padding: 0px;
 }
@@ -407,7 +411,7 @@ export default {
     transition-property: transform, opacity, padding;
     will-change: transform, opacity, padding;
     transition-duration: 0.25s;
-    z-index: 10;
+    /* z-index: 10; */
     border-radius: 0.6rem;
     padding: 0px;
 }
