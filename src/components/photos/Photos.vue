@@ -24,7 +24,7 @@
         <AddPhoto @refresh-photos="emitRefreshPhotos"/>
         
         <!-- The Modal -->
-        <div id="showPhotoModal" class="modalShowPhoto hide">
+        <div id="showPhotoModal" class="modalShowPhoto hide" >
 
             <span class="close" @click="hideModal()">&times;</span>
 
@@ -38,16 +38,17 @@
                     <!-- <figcaption>Caption goes here</figcaption> -->
 
             </div>
-            <div class="likeButtonDiv" >
-                <vue-like-dislike-buttons :key="likesRefreshKey"
-                    
-                    @like="addLikeDislike('like')"
-                    @dislike="addLikeDislike('dislike')"
-                    :likes="getLikes()"
-                    :dislikes="getDislikes()"
-                    :likeChecked="likeChecked"
-                    :dislikeChecked="dislikeChecked"
-                />
+            <div class="likeButtonDiv" :key="likesRefreshKey">
+                <!--   -->
+
+                <i class="likeIconI" @click="addLikeDislike('like')">
+                <LikeIcon class="likeIcon"/> ({{likes}})
+                </i>
+                
+
+                <i class="likeIconI" @click="addLikeDislike('dislike')">
+                <LikeIcon class="dislikeIcon"/> ({{dislikes}})
+                </i>
 
                 <!-- <div @click="addLikeDislike('like')"> Like ({{likes}})</div>
             <div @click="addLikeDislike('dislike')"> Dislike ({{dislikes}})</div> -->
@@ -56,14 +57,6 @@
             <p class="imageCaption">Showing image {{openImageIndex+1}} of {{currentImgList.length}}</p>
             <p class="imageCaption">Uploaded by {{currUserName}}</p>
             
-            
-
-
-            
-
-                
-
-
         </div>
 
   </div>
@@ -73,13 +66,16 @@
 
 import PhotosDataService from '../service/PhotosDataService';
 import AddPhoto from './AddPhoto.vue';
-import VueLikeDislikeButtons from "vue-like-dislike-buttons";
+import LikeIcon from './LikeIcon.vue';
+
+// import VueLikeDislikeButtons from "vue-like-dislike-buttons";
 
 export default {
   name: 'Photos',
   components: {
     AddPhoto,
-    VueLikeDislikeButtons
+    // VueLikeDislikeButtons,
+    LikeIcon
   },
   data: function () {
       return {
@@ -143,38 +139,47 @@ export default {
         updateOpenImgData(){
             this.likesRefreshKey = !(this.likesRefreshKey);
             this.getUserName(this.currentImgList[this.openImageIndex].userID);
-            this.likes = this.currentImgList[this.openImageIndex].likes;
-            this.dislikes = this.currentImgList[this.openImageIndex].dislikes;
+            this.getLikes();
+            this.getDislikes();
             // alert("Likes:"+ this.likes + ", dislikes:" + this.dislikes);
+
 
 
         },
         getLikes(){
-            this.updateOpenImgData()
-            return this.likes;
+            // this.updateOpenImgData()
+            this.likes =  this.currentImgList[this.openImageIndex].likes;
         },
         getDislikes(){
-            this.updateOpenImgData()
-            return this.dislikes;
+            // this.updateOpenImgData()
+            this.dislikes = this.currentImgList[this.openImageIndex].dislikes;
         },
 
         addLikeDislike(button) {
             // this.CATEGORY = catcode
             PhotosDataService.updateLikesDislikes(this.currentImgList[this.openImageIndex].id, button) //HARDCODED
-                .then(result => {
-                    console.log('success', result);
+                .then(response => {
+                    // console.log('success', response);
                     this.refreshPhotos(this.CATEGORY);
+                    this.likes = response.data.likes;
+                    this.dislikes = response.data.dislikes;
+                    // this.updateOpenImgData();
+                    
+                    // alert("success");
+
                 }).catch(error => {
                     alert("Error Updating likes/dislikes! Please retry.");
                     console.log(error.response);
-                });
-
-                this.updateOpenImgData();
+                });    
+                
+                // this.$forceUpdate();
         },
 
         emitRefreshPhotos () {
             // this.$emit('refresh-photos-main');
-            this.forceRerender();
+            // this.forceRerender();
+            this.photosRefreshKey = !(this.photosRefreshKey);
+            this.refreshPhotos(this.CATEGORY);
 
         },
         showModal(imgLink, pIndex){
@@ -205,11 +210,14 @@ export default {
 
 
         },
-        forceRerender() {
-            this.photosRefreshKey = !(this.photosRefreshKey);
-            this.refreshPhotos(this.CATEGORY);
-            // this.renderComponent = true;
+        reload() {
+            this.$forceUpdate();
         }
+        // forceRerender() {
+        //     this.photosRefreshKey = !(this.photosRefreshKey);
+        //     this.refreshPhotos(this.CATEGORY);
+        //     // this.renderComponent = true;
+        // }
         
     },
     
@@ -221,6 +229,7 @@ export default {
     // },
     created() {
         this.refreshPhotos(this.CATEGORY);
+        // this.updateOpenImgData();
     }
 
     // watch: {
@@ -235,8 +244,32 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
+.likeIcon{
+    /* size: 20; */
+    fill:white;
+}
+
+.likeButtonDiv > i{
+    margin:3%;
+    color: white;
+}
+
+.likeButtonDiv > i:hover,
+.likeButtonDiv > i:focus {
+  cursor: pointer;
+}
+
+.dislikeIcon{
+    /* size: 20; */
+    fill:white;
+    transform: scale(-1,-1);
+}
+
+
 .likeButtonDiv{
+    display: flex;
     text-align: center;
+    margin-left: 45%;
 }
 
 .like-dislike-buttons__btn{
@@ -267,7 +300,7 @@ export default {
 .modalBoxContainer{
     margin: auto;
     display: flex;
-    padding: 5% 5% 0% 5%;
+    padding: 2% 5% 0% 5%;
     justify-content: center;
     align-items: center;
     height: 75%; /* Full height */
@@ -347,7 +380,7 @@ export default {
     /* margin-top: 0px; */
     margin-left: 0px;
     white-space: nowrap;
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
     font-weight: 300;
     color: rgb(255, 255, 255);
     opacity: 1;
