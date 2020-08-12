@@ -9,6 +9,14 @@ class PhotosDataService {
     return axios.get(`${PHOTOS_API_URL}/${CATEGORY}`);
   }
 
+  retrieveUserDetails(ID) {
+    return axios.get(`${PHOTOS_API_URL}/userDetails/${ID}`);
+  }
+
+  updateLikesDislikes(ID, BUTTON){
+    return axios.get(`${PHOTOS_API_URL}/userLikes/${ID}/${BUTTON}`);
+  }
+
   sendPhoto(DATA, CONFIG) {
 
     const URL = `${PHOTOS_API_URL}/upload`; 

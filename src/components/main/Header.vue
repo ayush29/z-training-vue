@@ -123,7 +123,7 @@ header{
 }
 
 img{
-    max-width: 14rem;
+    max-width: 10rem;
 }
 
 div{
@@ -131,7 +131,7 @@ div{
     justify-content: center;
 }
 div, p, span {
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 a:link{
