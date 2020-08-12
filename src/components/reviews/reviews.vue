@@ -136,6 +136,7 @@ export default {
                 }
                 if(authenticatedUser === null) {
                     rootEventBus.$emit('login-modal-event');
+                    EventBus.$emit('revertAllReviewsDropDown');
                     return;
                 }
             }

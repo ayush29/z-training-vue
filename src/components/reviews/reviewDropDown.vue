@@ -63,6 +63,11 @@ export default {
         rootEventBus.$on('logout-event', () => {
             this.changeCurVal(this.obj.options[0]);
         });
+        EventBus.$on('revertAllReviewsDropDown', () => {
+            if(this.obj.name === 'filter-dropdown')
+            this.changeCurVal(this.obj.options[0]);
+        });
+        
     },
 }
 </script>
