@@ -38,10 +38,25 @@
                     <!-- <figcaption>Caption goes here</figcaption> -->
 
             </div>
+            <div class="likeButtonDiv" >
+                <vue-like-dislike-buttons :key="likesRefreshKey"
+                    
+                    @like="addLikeDislike('like')"
+                    @dislike="addLikeDislike('dislike')"
+                    :likes="getLikes()"
+                    :dislikes="getDislikes()"
+                    :likeChecked="likeChecked"
+                    :dislikeChecked="dislikeChecked"
+                />
+
+                <!-- <div @click="addLikeDislike('like')"> Like ({{likes}})</div>
+            <div @click="addLikeDislike('dislike')"> Dislike ({{dislikes}})</div> -->
+            </div>
+
             <p class="imageCaption">Showing image {{openImageIndex+1}} of {{currentImgList.length}}</p>
             <p class="imageCaption">Uploaded by {{currUserName}}</p>
-            <div @click="addLikeDislike('like')"> Like ({{likes}})</div>
-            <div @click="addLikeDislike('dislike')"> Dislike ({{dislikes}})</div>
+            
+            
 
 
             
@@ -58,11 +73,13 @@
 
 import PhotosDataService from '../service/PhotosDataService';
 import AddPhoto from './AddPhoto.vue';
+import VueLikeDislikeButtons from "vue-like-dislike-buttons";
 
 export default {
   name: 'Photos',
   components: {
-    AddPhoto
+    AddPhoto,
+    VueLikeDislikeButtons
   },
   data: function () {
       return {
@@ -93,9 +110,12 @@ export default {
           openImageIndex: 0,
           popupImage: null,
           photosRefreshKey: 0,
+          likesRefreshKey: 0,
           currUserName:null,
           likes:0,
           dislikes:0,
+          likeChecked: false,
+          dislikeChecked: false
 
 
         
@@ -121,9 +141,21 @@ export default {
 
         },
         updateOpenImgData(){
+            this.likesRefreshKey = !(this.likesRefreshKey);
             this.getUserName(this.currentImgList[this.openImageIndex].userID);
             this.likes = this.currentImgList[this.openImageIndex].likes;
             this.dislikes = this.currentImgList[this.openImageIndex].dislikes;
+            // alert("Likes:"+ this.likes + ", dislikes:" + this.dislikes);
+
+
+        },
+        getLikes(){
+            this.updateOpenImgData()
+            return this.likes;
+        },
+        getDislikes(){
+            this.updateOpenImgData()
+            return this.dislikes;
         },
 
         addLikeDislike(button) {
@@ -136,6 +168,7 @@ export default {
                     alert("Error Updating likes/dislikes! Please retry.");
                     console.log(error.response);
                 });
+
                 this.updateOpenImgData();
         },
 
@@ -201,6 +234,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+
+.likeButtonDiv{
+    text-align: center;
+}
+
+.like-dislike-buttons__btn{
+    color: white;
+    padding: 1%;
+}
 
 .hide{
     display:none;
