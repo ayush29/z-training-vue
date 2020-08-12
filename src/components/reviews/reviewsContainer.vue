@@ -84,21 +84,22 @@ export default {
     box-sizing: border-box;
 } */
 
-@font-face {
+/* @font-face {
     font-family: metropolis;
     src: url(../../../public/metropolis.regular.otf);
-}
+} */
 
 .reviews-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    font-size: 1rem;
 }
 
-.reviews-container * {
+/* .reviews-container * {
     font-family: metropolis, Helvetica, sans-serif;
     box-sizing: border-box;
-}
+} */
 
 #reviews-left-pane {
     width: 100%;
