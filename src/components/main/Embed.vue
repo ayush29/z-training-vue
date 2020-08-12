@@ -12,13 +12,13 @@ import eventBus from '../EventBus.js'
 import OnlineOrder from '../onlineOrder/Online_order.vue'
 import Photos from '../photos/Photos.vue'
 import Menu from '../menu/Menu.vue'
-import Reviews from '../reviews/Reviews.vue'
+import ReviewsContainer from '../reviews/reviewsContainer.vue'
 import Overview from '../overview/Overview.vue'
 export default {
   name: 'Embed',
   data(){
       return {
-          Tabs: [Overview, OnlineOrder, Reviews, Menu, Photos],
+          Tabs: [Overview, OnlineOrder, ReviewsContainer, Menu, Photos],
           selectedTab: 0
       }
   },
@@ -29,7 +29,7 @@ export default {
       OnlineOrder,
       Photos,
       Overview,
-      Reviews,
+      ReviewsContainer,
       Menu
   }
 }
@@ -43,7 +43,7 @@ export default {
 *{
     box-sizing: border-box;
 } */
-section{
+/* section{
     display: block;
 }
 div{
@@ -51,7 +51,7 @@ div{
     justify-content: center;
 }
 div, p, span {
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 a:link{
@@ -68,5 +68,5 @@ a{
     color: #5a5858;
     opacity: 73%;
     transition: 0.2s;
-}
+} */
 </style>

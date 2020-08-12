@@ -150,7 +150,7 @@ div{
     justify-content: center;
 }
 div, p, span {
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 a:link{
     text-decoration: none;    
