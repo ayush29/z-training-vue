@@ -34,6 +34,7 @@
     </section>	
 </template>	
 <script>	
+import rootEventBus from '../EventBus.js'
 import EventBus from "../../reviewEventBus";
 import WriteReview from './writeReview';
 export default {
@@ -59,8 +60,17 @@ export default {
             EventBus.$emit('changedRating', this.rating, this.ratingText);
         },
         displayModal() {
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(authenticatedUser === null) {
+                rootEventBus.$emit('login-modal-event');
+                return;
+            }
             let el = document.getElementById('write-review-modal');
             el.style.display = 'block';
+            
         },
     },
     mounted() {
@@ -68,6 +78,7 @@ export default {
             this.rating = newRating;
             this.ratingText = newRatingText;
         });
+        rootEventBus.$on('clickWriteReviewModal', () => this.displayModal());
     }
 }	
 </script>

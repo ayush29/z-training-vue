@@ -170,6 +170,7 @@
 
 <script>
 import EventBus from "../../reviewEventBus";
+import rootEventBus from '../EventBus.js'
 import ReviewComment from './reviewComment';
 export default {
     name: 'Review',
@@ -223,21 +224,52 @@ export default {
     },
     methods: {
         likeReview() {
-            fetch(`http://localhost:8080/reviews/${this.rev.id}/likes`, {
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(authenticatedUser === null) {
+                rootEventBus.$emit('login-modal-event');
+                return;
+            }
+            fetch(`http://localhost:8080/reviews/${this.rev.id}/user/${authenticatedUser.id}/like`, {
                 method: 'post',
             })
             .then(response => {
-                return response.json();
+                if(response.ok) {
+                    response.json()
+                            .then(data => {
+                                this.rev.likes = data;
+                            })
+                } else {
+                    response.json()
+                            .then(data => {
+                                alert(data.message);
+                            })
+                }
             })
-            .then(data => {
-                this.rev.likes = data;
-            })
+            .catch(error => {
+                alert("unknown error in like review", error);
+            });
         },
         submitComment() {
-            if (this.commentText === '') return;
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(authenticatedUser === null) {
+                rootEventBus.$emit('login-modal-event');
+                this.commentText = '';
+                return;
+            }
+            if (this.commentText.trim() === '') {
+                alert('please enter a valid comment!!!');
+                this.commentText = '';
+                return;
+            }
             let commentObj = {
                 text: this.commentText,
-                user_id: 1,
+                user_id: authenticatedUser.id,
             }
             fetch(`http://localhost:8080/reviews/${this.rev.id}/comments`, {
                 method: 'post',
@@ -248,10 +280,21 @@ export default {
                 body: JSON.stringify(commentObj),
             })
             .then(response => {
-                return response.json();
-            }).then(data => {
-                this.rev.comments.unshift(data);  // add to starting of the comments list
-                this.numComments++;
+                if(response.ok) {
+                    response.json()
+                            .then(data => {
+                                this.rev.comments.unshift(data);  // add to starting of the comments list
+                                this.numComments++;
+                            })
+                } else {
+                    response.json()
+                            .then(data => {
+                                alert(data.message);
+                            })
+                }
+            })
+            .catch(error => {
+                alert("unknown error in write comment", error);
             });
             this.commentText = '';
         },
@@ -264,9 +307,20 @@ export default {
                 method: 'get',
             })
             .then(response => {
-                return response.json();
-            }).then(data => {
-                this.userNumReviews = data;
+                if(response.ok) {
+                    response.json()
+                            .then(data => {
+                                this.userNumReviews = data;
+                            })
+                } else {
+                    response.json()
+                            .then(data => {
+                                alert(data.message);
+                            })
+                }
+            })
+            .catch(error => {
+                alert("unknown error get user num reviews", error);
             });
         },
         divideReviewTags() {
@@ -485,7 +539,6 @@ export default {
     flex-grow: 1;
 }
 .write-comment-input textarea {
-    font-size: inherit;
     width: 100%;
     box-sizing: border-box;
     resize: none;

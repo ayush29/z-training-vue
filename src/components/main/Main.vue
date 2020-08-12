@@ -110,6 +110,8 @@ export default {
 #relatedInfo{
     border-top: 1px solid lightgray; 
     margin-top: 2rem;
+    position: relative;
+    z-index: -1;
 }
 
 .relatedLinks a{

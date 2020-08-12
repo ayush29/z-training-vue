@@ -64,6 +64,7 @@
 
 <script>
 import EventBus from "../../reviewEventBus";
+import rootEventBus from '../EventBus.js'
 import ReviewTag from "./reviewTag";
 export default {
     name: 'WriteReview',
@@ -170,10 +171,21 @@ export default {
                 this.chosenReviewTags.push(obj);
         },
         submitReview() {
-            if (this.reviewText === '') return;
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(authenticatedUser === null) {
+                rootEventBus.$emit('login-modal-event');
+                return;
+            }
+            if(this.copyRating < 1 || this.copyRating > 5) {
+                alert('the review rating should be in [1, 5]!!!');
+                return;
+            }
             let reviewObj = {
                 rating: this.copyRating,
-                user_id: 1,
+                user_id: authenticatedUser.id,
                 text: this.reviewText,
                 review_tags: this.chosenReviewTags,
             }
@@ -186,9 +198,21 @@ export default {
                 body: JSON.stringify(reviewObj),
             })
             .then(response => {
-                return response.json();
-            }).then(data => {
-                EventBus.$emit('submittedNewReview', data);
+                if(response.ok) {
+                    response.json()
+                            .then(data => {
+                                EventBus.$emit('submittedNewReview', data);
+                                return data;
+                            })
+                } else {
+                    response.json()
+                            .then(data => {
+                                alert(data.message);
+                            })
+                }
+            })
+            .catch(error => {
+                alert("unknown error in write review", error);
             });
             this.reviewText = '';
             this.changeModalRating(0);
@@ -231,6 +255,7 @@ export default {
     background-color: rgb(255, 255, 255);
     height: max-content;
     opacity: 1;
+    position: relative;
     z-index: 1;
     display: block;
 }

@@ -30,6 +30,7 @@
 
 <script>
 import EventBus from "../../reviewEventBus";
+import rootEventBus from "../EventBus";
 export default {
     name: 'ReviewDropDown',
     props: {
@@ -59,6 +60,9 @@ export default {
     mounted() {
         let list = document.querySelector(`#${this.obj.name} > .dropdown-content`);
         list.classList.add('hide-section');
+        rootEventBus.$on('logout-event', () => {
+            this.changeCurVal(this.obj.options[0]);
+        });
     },
 }
 </script>
