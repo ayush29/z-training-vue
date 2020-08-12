@@ -54,6 +54,7 @@ export default {
     left: 0px;
     width: 100%;
     height: 100%;
+    z-index: 10;
     background-color: rgb(28, 28, 28);
 
 }.overviewPrev, .overviewNext{
