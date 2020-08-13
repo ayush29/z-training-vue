@@ -496,7 +496,7 @@ background-color: rgb(220, 37, 54);
 
 
 .jbzhIw {
-    margin-top: 3.5rem;
+    margin-top: 0.5rem;
 }
 .jCYPXs {
     position: absolute;
