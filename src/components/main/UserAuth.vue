@@ -48,11 +48,16 @@ export default {
           this.closeLoginSession();
       },
       closeLoginSession(){
-          localStorage.isLoggedIn = false;
+        //   localStorage.isLoggedIn = false;
+          if(localStorage.isLoggedIn)
+          {
+              localStorage.removeItem('isLoggedIn');
+          }
           if(localStorage.getItem('authenticatedUser'))
           {
               localStorage.removeItem('authenticatedUser');
           }
+        //   localStorage.clear();
       }
   },
 //   beforeCreate: function(){
