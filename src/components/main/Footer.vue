@@ -7,42 +7,7 @@
             <section class="elhb8j-2 fhQkNV">
                 <img src="https://b.zmtcdn.com//data/bdddded729eec1881d992117920afa5f1553759845.png" alt="Zomato logo" height="28px" class="elhb8j-1 bZvWyv">
                 <div class="elhb8j-11 bTmMWW"></div>
-                <section class="elhb8j-9 icSVnn">
-                <div class="sc-18n4g8v-0 gAhmYY sc-10ugfab-1 gJYvaX">
-                    <div tabindex="0" aria-labelledby="country-dropdown-label" class="sc-10ugfab-9 ceanFw">
-                        <label id="country-dropdown-label" class="sc-10ugfab-2 jzrEzn">Select Country</label><span class="sc-10ugfab-5 erXsJY"></span>
-                        <div tabindex="-1" aria-activedescendant="country-active" class="sc-10ugfab-6 TWZmX">
-                            <div class="bke1zw-0 cMipmx sc-10ugfab-0 iYiNyG">
-                            <div class="bke1zw-1 gfTNTj">
-                                <div id="country-active" class="sc-10ugfab-4 fJhMSb"><span width="45" class="sc-13tn0rn-0 DHMyd"></span><span class="sc-10ugfab-3 dirNi">India</span></div>
-                            </div>
-                            <div class="bke1zw-1 fxfmqU">
-                                <div id="country-united-states" class="sc-10ugfab-4 hVtcrz"><span width="45" class="sc-13tn0rn-0 dIACQO"></span><span class="sc-10ugfab-3 dirNi">USA</span></div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="sc-10ugfab-7 epQgJy">
-                            <span width="45" class="sc-13tn0rn-0 mtUrN"></span><span class="sc-10ugfab-8 fyCgPB">India</span>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="elhb8j-11 bpckp"></div>
-                <div class="sc-18n4g8v-0 gAhmYY">
-                    <div tabindex="0" aria-labelledby="language-dropdown-label" class="zqptxt-7 yDjtn">
-                        <label id="language-dropdown-label" class="zqptxt-1 kUAWYs">Select Language</label>
-                        <div tabindex="-1" aria-activedescendant="lang-active" class="zqptxt-4 bmHIAu">
-                            <span class="zqptxt-3 iEupHL"></span>
-                            <section class="zqptxt-2 ccGyrj"></section>
-                        </div>
-                        <div class="zqptxt-5 jUULOr">
-                            
-                            <span class="zqptxt-6 giRTmH">English</span>
-                            
-                        </div>
-                    </div>
-                </div>
-                </section>
+                
             </section>
             <div class="bke1zw-0 cMipmx elhb8j-22 dnqpZM">
                 <div name="Company" class="bke1zw-1 elhb8j-19 fNpfdd">
@@ -140,19 +105,19 @@
                 <div class="elhb8j-14 gjAfWx">
                     <a href="https://www.facebook.com/zomato" target="_blank" class="elhb8j-16 febAgr">
                         <div class="elhb8j-7 kaDfoh">
-                            
+                            <i class="rbbb40-1 MxLSp" size="22" color="#1C1C1C"><svg xmlns="http://www.w3.org/2000/svg" fill="#1C1C1C" width="22" height="22" viewBox="0 0 20 20" aria-labelledby="icon-svg-title-FacebookCircle icon-svg-desc-FacebookCircle" role="img" class="rbbb40-0 knjgIY"><linearGradient id="ckdrprmei73121qk3gq9ufzvq" x1="0" x2="100%" y1="0" y2="0"><stop offset="0" stop-color="#1C1C1C"></stop><stop offset="100%" stop-color="#1C1C1C"></stop></linearGradient><title id="icon-svg-title-FacebookCircle">Facebook Circle icon</title><desc id="icon-svg-desc-FacebookCircle">It is an icon with title Facebook Circle</desc><path d="M0 10C0 4.5 4.5 0 10 0C15.5 0 20 4.5 20 10C20 15.5 15.5 20 10 20C4.5 20 0 15.5 0 10ZM10.75 15.4375V10.1875H12.1875L12.375 8.375H10.75V7.5C10.75 7.0625 10.8125 6.8125 11.5 6.8125H12.375V5H10.9375C9.1875 5 8.625 5.875 8.625 7.3125V8.375H7.5V10.1875H8.5625V15.4375C8.5625 15.4375 10.75 15.4375 10.75 15.4375Z" fill="url(#ckdrprmei73121qk3gq9ufzvq)"></path></svg></i>
                         </div>
                         
                     </a>
                     <a href="https://twitter.com/zomato" target="_blank" class="elhb8j-16 febAgr">
                         <div class="elhb8j-7 kaDfoh">
-                            
+                            <i class="rbbb40-1 MxLSp" size="22" color="#1C1C1C"><svg xmlns="http://www.w3.org/2000/svg" fill="#1C1C1C" width="22" height="22" viewBox="0 0 20 20" aria-labelledby="icon-svg-title-TwitterCircle icon-svg-desc-TwitterCircle" role="img" class="rbbb40-0 knjgIY"><linearGradient id="ckdrprmei73141qk338h0ccvp" x1="0" x2="100%" y1="0" y2="0"><stop offset="0" stop-color="#1C1C1C"></stop><stop offset="100%" stop-color="#1C1C1C"></stop></linearGradient><title id="icon-svg-title-TwitterCircle">Twitter Circle icon</title><desc id="icon-svg-desc-TwitterCircle">It is an icon with title Twitter Circle</desc><path d="M0 10C0 4.5 4.5 0 10 0C15.5 0 20 4.5 20 10C20 15.5 15.5 20 10 20C4.5 20 0 15.5 0 10ZM10.0625 8.125V8.5L9.6875 8.4375C8.3125 8.25 7.125 7.6875 6.125 6.6875L5.625 6.1875L5.5 6.5625C5.25 7.375 5.375 8.25 5.9375 8.8125C6.25 9.125 6.1875 9.1875 5.6875 9C5.5 8.9375 5.375 8.875 5.3125 8.9375C5.25 9 5.4375 9.6875 5.5625 9.9375C5.75 10.3125 6.1875 10.6875 6.5625 10.875L6.9375 11.0625H6.5C6.0625 11.0625 6.0625 11.0625 6.125 11.25C6.3125 11.75 6.875 12.25 7.5625 12.5L8 12.6875L7.625 12.9375C7 13.3125 6.3125 13.5 5.625 13.5C5.3125 13.5 5 13.5625 5 13.5625C5 13.625 5.9375 14.0625 6.4375 14.25C8.0625 14.75 9.9375 14.5 11.375 13.6875C12.375 13.0625 13.375 11.875 13.875 10.75C14.125 10.125 14.375 9 14.375 8.5C14.375 8.1875 14.4375 8.125 14.8125 7.6875C15.0625 7.4375 15.3125 7.1875 15.3125 7.0625C15.375 6.9375 15.375 6.9375 15 7.0625C14.375 7.3125 14.25 7.25 14.625 6.875C14.875 6.625 15.125 6.1875 15.125 6.0625C15.125 6.0625 15 6.0625 14.875 6.125C14.75 6.1875 14.4375 6.3125 14.1875 6.375L13.8125 6.5L13.5 6.25C13.3125 6.125 13 5.9375 12.875 5.9375C12.5 5.8125 11.9375 5.8125 11.5625 6C10.5625 6.25 10 7.1875 10.0625 8.125Z" fill="url(#ckdrprmei73141qk338h0ccvp)"></path></svg></i>
                         </div>
                         
                     </a>
                     <a href="https://www.instagram.com/zomato/" target="_blank" class="elhb8j-16 febAgr">
                         <div class="elhb8j-7 kaDfoh">
-                            
+                            <i class="rbbb40-1 MxLSp" size="22" color="#1C1C1C"><svg xmlns="http://www.w3.org/2000/svg" fill="#1C1C1C" width="22" height="22" viewBox="0 0 20 20" aria-labelledby="icon-svg-title-InstagramCircle icon-svg-desc-InstagramCircle" role="img" class="rbbb40-0 knjgIY"><linearGradient id="ckdrprmej73161qk3er4d8xeh" x1="0" x2="100%" y1="0" y2="0"><stop offset="0" stop-color="#1C1C1C"></stop><stop offset="100%" stop-color="#1C1C1C"></stop></linearGradient><title id="icon-svg-title-InstagramCircle">Instagram Circle icon</title><desc id="icon-svg-desc-InstagramCircle">It is an icon with title Instagram Circle</desc><path d="M0 10C0 4.5 4.5 0 10 0C15.5 0 20 4.5 20 10C20 15.5 15.5 20 10 20C4.5 20 0 15.5 0 10ZM10.1875 5C8.8125 5 8.625 5 8.0625 5C7.5 5.0625 7.125 5.125 6.8125 5.25C6.5 5.375 6.1875 5.5625 5.875 5.875C5.5625 6.1875 5.375 6.4375 5.25 6.8125C5.125 7.125 5 7.5 5 8.0625C5 8.625 5 8.75 5 10.1875C5 11.625 5 11.8125 5.0625 12.375C5.0625 12.9375 5.1875 13.3125 5.3125 13.625C5.4375 13.9375 5.625 14.25 5.9375 14.5625C6.1875 14.8125 6.5 15 6.875 15.1875C7.1875 15.3125 7.5625 15.4375 8.125 15.4375C8.6875 15.4375 8.875 15.5 10.25 15.5C11.6875 15.5 11.875 15.5 12.4375 15.4375C13 15.375 13.375 15.3125 13.6875 15.1875C14 15.0625 14.3125 14.875 14.625 14.5625C14.9375 14.25 15.125 14 15.25 13.625C15.375 13.3125 15.5 12.875 15.5 12.375C15.5625 11.8125 15.5625 11.625 15.5625 10.1875C15.5625 8.75 15.5625 8.625 15.5 8.0625C15.5 7.5 15.375 7.125 15.25 6.8125C15.125 6.4375 14.9375 6.1875 14.625 5.875C14.375 5.625 14.0625 5.4375 13.6875 5.25C13.375 5.125 12.9375 5.0625 12.4375 5C11.8125 5 11.625 5 10.1875 5ZM9.75 5.9375C9.875 5.9375 10.0625 5.9375 10.1875 5.9375C11.5625 5.9375 11.75 5.9375 12.3125 5.9375C12.8125 5.9375 13.0625 6.0625 13.25 6.125C13.5 6.25 13.6875 6.375 13.875 6.5C14.0625 6.625 14.1875 6.8125 14.25 7.125C14.3125 7.3125 14.4375 7.5625 14.4375 8.0625C14.5 8.625 14.5 8.8125 14.5 10.1875C14.5 11.5625 14.5 11.75 14.4375 12.3125C14.4375 12.8125 14.3125 13.125 14.25 13.3125C14.1875 13.5625 14.0625 13.6875 13.875 13.9375C13.6875 14.125 13.5 14.1875 13.25 14.3125C13.0625 14.375 12.8125 14.5 12.3125 14.5C11.75 14.5 11.5625 14.5625 10.1875 14.5625C8.8125 14.5625 8.625 14.5625 8.0625 14.5C7.5625 14.5 7.3125 14.375 7.125 14.3125C6.875 14.1875 6.6875 14.125 6.5 13.9375C6.3125 13.75 6.1875 13.5625 6.125 13.3125C6.0625 13.125 6 12.875 5.9375 12.3125C5.9375 11.75 5.9375 11.625 5.9375 10.1875C5.9375 8.8125 5.9375 8.625 5.9375 8.0625C6 7.5625 6.0625 7.3125 6.125 7.125C6.25 6.875 6.375 6.6875 6.5 6.5C6.625 6.3125 6.875 6.1875 7.125 6.125C7.3125 6.0625 7.5625 5.9375 8.0625 5.9375C8.5625 5.9375 8.75 5.9375 9.75 5.9375ZM13 6.8125C12.6875 6.8125 12.375 7.0625 12.375 7.4375C12.375 7.8125 12.625 8.0625 13 8.0625C13.375 8.0625 13.625 7.8125 13.625 7.4375C13.625 7.0625 13.3125 6.8125 13 6.8125ZM10.1875 7.5C8.75 7.5 7.5 8.6875 7.5 10.1875C7.5 11.6875 8.6875 12.875 10.1875 12.875C11.6875 12.875 12.875 11.6875 12.875 10.1875C12.875 8.6875 11.6875 7.5 10.1875 7.5ZM10.1875 8.4375C11.125 8.4375 11.9375 9.1875 11.9375 10.1875C11.9375 11.1875 11.1875 11.9375 10.1875 11.9375C9.25 11.9375 8.4375 11.1875 8.4375 10.1875C8.4375 9.1875 9.25 8.4375 10.1875 8.4375Z" fill="url(#ckdrprmej73161qk3er4d8xeh)"></path></svg></i>
                         </div>
                         
                     </a>
@@ -186,6 +151,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
+footer {
+    position: relative;
+    z-index: -1;
+}
 
 @media (max-width: 900px) and (min-width: 768px)
 {.bWAMuJ {
@@ -204,7 +173,7 @@ export default {
     max-width: 110rem;
     width: 110rem;
     position: relative;
-    padding: 4.8rem 0px 2.2rem;
+    padding: 1.8rem 0px 1.8rem;
 }
 
 .fhQkNV {
@@ -214,7 +183,7 @@ export default {
     width: 100%;
     -webkit-box-pack: justify;
     justify-content: space-between;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 .bTmMWW {
@@ -260,7 +229,7 @@ export default {
     width: 2.1rem;
     height: 2.3rem;
     transform: rotate(45deg);
-    z-index: 11;
+    /* z-index: 11; */
     border-radius: 2.2rem 0px 0.4rem;
     background: rgb(255, 255, 255);
 }
@@ -280,7 +249,7 @@ export default {
     transition-property: opacity, padding;
     will-change: opacity, padding;
     transition-duration: 0.25s;
-    z-index: 10;
+    /* z-index: 10; */
     border-radius: 0.6rem;
     padding: 0px;
 }
@@ -360,7 +329,7 @@ export default {
 }
 
 .fyCgPB {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     line-height: 2rem;
     max-width: 80%;
     white-space: nowrap;
@@ -407,7 +376,7 @@ export default {
     transition-property: transform, opacity, padding;
     will-change: transform, opacity, padding;
     transition-duration: 0.25s;
-    z-index: 10;
+    /* z-index: 10; */
     border-radius: 0.6rem;
     padding: 0px;
 }
@@ -438,7 +407,7 @@ export default {
 
 
 .giRTmH {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     line-height: 2rem;
     color: rgb(28, 28, 28);
     font-weight: 400;
@@ -462,7 +431,7 @@ export default {
 }
 
 .icGwVo {
-    font-size: 1.4rem;
+    font-size: 1rem;
     letter-spacing: 0.2rem;
     text-transform: uppercase;
     font-weight: 500;
@@ -474,7 +443,7 @@ export default {
 }
 
 .mcMLG {
-    font-size: 1.4rem;
+    font-size: 1rem;
     line-height: 2.1rem;
     color: rgb(105, 105, 105);
     margin: 0.5rem 0px;
@@ -530,9 +499,9 @@ export default {
 }
 
 .fStFdQ {
-    width: 13.7rem;
+    width: 10rem;
     height: 4rem;
-    background-image: url(https://b.zmtcdn.com/data/webuikit/9f0c85a….png);
+    background-image: url(https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png);
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -540,9 +509,9 @@ export default {
 
 
 .eWrJHn {
-    width: 13.7rem;
+    width: 10rem;
     height: 4rem;
-    background-image: url(https://b.zmtcdn.com/data/webuikit/23e9307….png);
+    background-image: url(https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png);
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -577,7 +546,7 @@ export default {
 }
 
 .xEZfN {
-    font-size: 1.4rem;
+    font-size: 1rem;
     letter-spacing: 0.2rem;
     text-transform: uppercase;
     font-weight: 500;

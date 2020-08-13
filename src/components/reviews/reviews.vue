@@ -55,6 +55,7 @@
 
 <script>
 import EventBus from "../../reviewEventBus";
+import rootEventBus from "../EventBus";
 import Review from './review';
 
 export default {
@@ -94,27 +95,71 @@ export default {
     },
     methods: {
         updateNumPages() {
-            fetch(`http://localhost:8080/reviews/user/3/filter/${this.filterOption}/num-reviews`)
+            let authenticatedUser = null;
+            if(this.filterOption === 'AllReviews') {
+                authenticatedUser = {id: 0};
+            } else {
+                if(localStorage.isLoggedIn) {
+                    authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+                }
+                if(authenticatedUser === null) {
+                    rootEventBus.$emit('login-modal-event');
+                    return;
+                }
+            }
+            fetch(`http://localhost:8080/reviews/user/${authenticatedUser.id}/filter/${this.filterOption}/num-reviews`)
             .then(response => {
-                return response.json();
+                if(response.ok) {
+                    response.json()
+                            .then(data => {
+                                this.maxPages = Math.ceil(data/this.reviewsPerPage);
+                                this.checkPageButtons();
+                            })
+                } else {
+                    response.json()
+                            .then(data => {
+                                alert(data.message);
+                            })
+                }
             })
-            .then(data => {
-                this.maxPages = Math.ceil(data/this.reviewsPerPage);
-                this.checkPageButtons();
+            .catch(error => {
+                alert("unknown error in updating num pages", error);
             });
         },
         getReviews() {
-            fetch(`http://localhost:8080/reviews/user/3/filter/${this.filterOption}/sort/${this.sortOption}/page/${this.curPage}`)
+            let authenticatedUser = null;
+            if(this.filterOption === 'AllReviews') {
+                authenticatedUser = {id: 0};
+            } else {
+                if(localStorage.isLoggedIn) {
+                    authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+                }
+                if(authenticatedUser === null) {
+                    rootEventBus.$emit('login-modal-event');
+                    EventBus.$emit('revertAllReviewsDropDown');
+                    return;
+                }
+            }
+            fetch(`http://localhost:8080/reviews/user/${authenticatedUser.id}/filter/${this.filterOption}/sort/${this.sortOption}/page/${this.curPage}`)
             .then(response => {
-                return response.json();
+                if(response.ok) {
+                    response.json()
+                            .then(data => {
+                                this.reviewsList = data;
+                                this.updateNumPages();
+                            })
+                } else {
+                    response.json()
+                            .then(data => {
+                                alert(data.message);
+                            })
+                }
             })
-            .then(data => {
-                this.reviewsList = data;
-                this.updateNumPages();
+            .catch(error => {
+                alert("unknown error in get reviews", error);
             });
         },
         checkPageButtons() {
-            console.log("max pages = ", this.maxPages, this.curPage);
             let prevButton = document.getElementById("rev-prev-page-btn");
             let nextButton = document.getElementById("rev-next-page-btn");
             if (this.curPage === 1) prevButton.style.visibility = "hidden";
@@ -151,6 +196,9 @@ export default {
             this.reviewsList.unshift(dataObj);
             this.updateNumPages();
             EventBus.$emit('changeUserNumReviews');
+        });
+        rootEventBus.$on('success-auth', () => {
+            this.getReviews();
         });
     }
 }
