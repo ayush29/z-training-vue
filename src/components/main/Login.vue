@@ -51,14 +51,14 @@ export default {
           signupShow: false,
           authenticatedUser: null,
           newUser: {
-              name: '',
-              email: '',
-              phone: '',
-              password: ''
+              name: null,
+              email: null,
+              phone: null,
+              password: null
           },
           existingUserCred: {
-              email: '',
-              password: ''
+              email: null,
+              password: null
           }
 
         }
@@ -90,8 +90,8 @@ export default {
               alert('Welcome '+this.authenticatedUser.name);
               this.resetForm();
               this.startLoginSession();
-          }).catch((err)=>{
-              alert(err);
+          }).catch(()=>{
+            //   alert(err);
               alert('Login Failed!');
               this.resetForm();
 
@@ -111,8 +111,8 @@ export default {
               alert('Welcome '+this.authenticatedUser.name);
               this.resetForm();
               this.startLoginSession();
-          }).catch((err)=>{
-              alert(err);
+          }).catch(()=>{
+            //   alert(err);
               alert('Signup Failed!');
               this.resetForm();
           });
@@ -129,13 +129,13 @@ export default {
           }
       },
       resetForm(){
-          this.newUser.name= '';
-          this.newUser.email= '';
-          this.newUser.phone= '';
-          this.newUser.password= '';
+          this.newUser.name= null;
+          this.newUser.email= null;
+          this.newUser.phone= null;
+          this.newUser.password= null;
 
-          this.existingUserCred.email = '';
-          this.existingUserCred.password = '';
+          this.existingUserCred.email = null;
+          this.existingUserCred.password = null;
           
       }
   },

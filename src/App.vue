@@ -25,6 +25,11 @@ export default {
 </script>
 
 <style>
+@font-face {
+    font-family: metropolis;
+    src: url(../public/metropolis.regular.otf);
+}
+
 #root {
   /*font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,12 +38,12 @@ export default {
   color: #2c3e50;
   margin-top: 60px;*/
 
-  font-family: Okra,Helvetica,sans-serif;
+  font-family: metropolis, Helvetica, sans-serif;
+  /* font-family: Okra,Helvetica,sans-serif; */
   font-size: 62.5%;
   font-weight: 300;
   box-sizing: border-box;
   margin: auto;
   padding: 0px;
-
 }
 </style>

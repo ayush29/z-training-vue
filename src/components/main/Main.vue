@@ -8,7 +8,7 @@
                     <a href="https://www.zomato.com/india" title="India">India</a><span>/</span>
                     <a href="https://www.zomato.com/ncr/restaurants" title="Delhi NCR">Delhi NCR</a><span>/</span>
                     <a href="https://www.zomato.com/ncr/sector-135-restaurants" title="Sector 135">Sector 135</a><span>/</span>
-                    <a href="https://www.zomato.com/ncr/biryani-by-kilo-sector-135-noida" title="Biryani By Kilo">Biryani By Kilo</a><span>/</span>
+                    <a href="https://www.zomato.com/ncr/biryani-by-kilo-sector-135-noida" title="Biryani By Kilo">Biryani By Kilo</a>
                 </div>
             </section>
             <Gallery/>
@@ -97,9 +97,21 @@ export default {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+#dir a {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 0.7rem;
+}
+#dir span {
+    font-size: 0.7rem;
+    color: gray;
+
+}
 #relatedInfo{
     border-top: 1px solid lightgray; 
     margin-top: 2rem;
+    position: relative;
+    z-index: -1;
 }
 
 .relatedLinks a{
@@ -120,7 +132,7 @@ div{
     justify-content: center;
 }
 div, p, span {
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 a:link{

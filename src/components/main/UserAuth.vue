@@ -48,11 +48,16 @@ export default {
           this.closeLoginSession();
       },
       closeLoginSession(){
-          localStorage.isLoggedIn = false;
+        //   localStorage.isLoggedIn = false;
+          if(localStorage.isLoggedIn)
+          {
+              localStorage.removeItem('isLoggedIn');
+          }
           if(localStorage.getItem('authenticatedUser'))
           {
               localStorage.removeItem('authenticatedUser');
           }
+        //   localStorage.clear();
       }
   },
 //   beforeCreate: function(){
@@ -118,7 +123,7 @@ div{
     justify-content: center;
 }
 div, p, span {
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 a:link{
