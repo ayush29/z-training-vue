@@ -22,14 +22,14 @@
                 </div>
             </section>
             <section class="galView3">
-                <div width="100%" class="galView3a">
+                <div width="100%" class="galView3a" @click="viewPhotos">
                     <div width="100%" height="100%" class="galViewBase">
                         <img alt="image" :src=images[3]>
                         <!-- "https://b.zmtcdn.com/data/pictures/8/18821448/ba2cfa97650efd45b2307afb33813ee2.jpg"> -->
                     </div>
                     <p class="galView3a1">View Gallery</p>
                 </div>
-                <section class="galView3b"><!--set some BG img-->
+                <section class="galView3b" @click="addPhotos"><!--set some BG img-->
                     <section class="galView3b1">
                         <div>
                             <i size="20" color="#FFFFFF">
@@ -46,6 +46,7 @@
 
 <script>
 import PhotosDataService from '../service/PhotosDataService.js'
+import eventBus from '../EventBus.js'
 export default {
   name: 'Gallery',
   data(){
@@ -64,6 +65,39 @@ export default {
       }).catch(()=>{
           this.images = ['https://b.zmtcdn.com/data/pictures/chains/5/312995/734d388d6aaa9937ff2cfca22aea42df.jpg', 'https://b.zmtcdn.com/data/pictures/chains/5/312995/85d1e6a7f48b5dc09e4fcafd2152120e.jpg','https://b.zmtcdn.com/data/pictures/8/18821448/98c9161ed6d756b9fb2a16515aa74449.jpg','https://b.zmtcdn.com/data/pictures/8/18821448/ba2cfa97650efd45b2307afb33813ee2.jpg']
       });
+  },
+  methods:{
+      viewPhotos(){
+          if(localStorage.isLoggedIn)
+          {
+              //switch to photos tab
+              eventBus.$emit('action-tab-selection',4);
+              //scroll to actions tabs
+              eventBus.$emit('scroll-to-about-section');
+              
+          }
+          else
+          {
+              eventBus.$emit('login-modal-event');
+          }
+      },
+      addPhotos(){
+          if(localStorage.isLoggedIn)
+          {
+              //switch to photos tab
+              eventBus.$emit('action-tab-selection',4);
+              //scroll to actions tabs
+              eventBus.$emit('scroll-to-about-section');
+              setTimeout(() => {  eventBus.$emit('add-photos-event'); }, 50);
+
+              
+          }
+          else
+          {
+              eventBus.$emit('login-modal-event');
+          }
+          
+      }
   }
 }
 </script>

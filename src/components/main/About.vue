@@ -64,7 +64,12 @@ export default {
               eventBus.$emit('login-modal-event');
           }
           else{
-              alert('Feature coming soon!');
+              //switch to reviews tab
+              eventBus.$emit('action-tab-selection',2);
+              setTimeout(() => {  eventBus.$emit('clickWriteReviewModal');}, 50);
+              
+              
+            //   alert('Feature coming soon!');
           }
       }
   },
@@ -88,6 +93,9 @@ export default {
       {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
       }
+      eventBus.$on('scroll-to-about-section',()=>{
+          document.getElementById('aboutRestro').scrollIntoView();
+      });
   }
 }
 </script>
