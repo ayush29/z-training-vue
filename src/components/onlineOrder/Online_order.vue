@@ -2,23 +2,23 @@
 <div id = "app1">
     <div class='leftt'>
         <ul class = 'slist'>
-            <li class = 'litem' v-for="foodclass in foods" :key="foodclass.class_id" @click="nav_click(foodclass.class_id)" :class="{ active: (foodclass.class_id==cur_nav) }">{{foodclass.class_name}}</li>
+            <li class = 'litem' v-for="foodclass in foods" :key="foodclass.class_id" @click="nav_click(foodclass.class_id)" :class="{ active: (foodclass.class_id==cur_nav) }">{{foodclass.class_name}} ({{foodclass.item.length}})</li>
         </ul>
-        <button class="cart" @click="showCart()" >Cart {{cart}}</button>
+        <button class="cart" @click="showCart()" >Cart {{cartitem.length}}</button>
     </div>
     <div v-if = "contentview" class = 'rlist'>
         <div class = "obox" v-for="foodclass in foods" :key="foodclass.class_id">
           <div class="headline"><h2>{{foodclass.class_name}}</h2></div>
-          <div class = "boxxer" v-for="item in foodclass.items" :key="item.id">
-            <img class ="ig" :src="item.item_image" :alt="item.id">
+          <div class = "boxxer" v-for="itemm in foodclass.item" :key="itemm.item_id">
+            <img class ="ig" :src="itemm.item_img" :alt="itemm.item_id">
             <div class = "info">
-              <h3>{{item.name}}</h3>
+              <h3>{{itemm.item_name}}</h3>
               <span>★★★★☆ <span class = votes>(74 votes)</span> </span> <br>
-              <span class = price>₹{{item.item_cost}}</span><br><br>
-              <span class = press>{{item.desc}}</span>
+              <span class = price>₹{{itemm.item_cost}}</span><br><br>
+              <span class = press>{{itemm.descp}}</span>
             </div>
             <div class = "adder">
-              <button class = "add_btn" @click = "addToCart(item.name, item.item_cost, 1)"> Add  <span class='rplus'> + </span></button><br>
+              <button class = "add_btn" @click = "addToCart(itemm.item_id)"> Add  <span class='rplus'> + </span></button><br>
               <span class = "rsm">customizable</span>
             </div>
           </div>
@@ -27,9 +27,9 @@
     <div v-else class = "cartview">
         <table style = "width:100%">
             <tr> <td><h3>Item</h3></td> <td><h3>Quantity</h3></td> <td><h3>Rate</h3></td> <td><h3>Total</h3></td></tr>
-            <tr v-for="citem in cartitem" :key="citem.id"><td>{{citem.item}}</td> <td>{{citem.quantity}}</td> <td>{{citem.rate}}</td> <td>{{citem.total}}</td></tr>
+            <tr v-for="citem in cartitem" :key="citem.Item_name"><td>{{citem.item_name}}</td> <td>{{citem.quant}}</td> <td>{{citem.rate}}</td> <td>{{citem.tcost}}</td></tr>
              <tr> <td></td> <td></td> <td></td> <td></td></tr>
-            <tr> <td><h3>Total Cost</h3></td> <td>{{cart}}</td> <td>-</td> <td><h3>{{tprice}}</h3></td></tr>
+            <tr> <td><h3>Total Cost</h3></td> <td>{{incart}}</td> <td>-</td> <td><h3>{{tprice}}</h3></td></tr>
         </table>
     </div>
 </div>
@@ -41,22 +41,25 @@ export default {
     name: "OnlineOrder",
     data(){
         return {
-            cart : 0,
             cur_nav : 0,
             x : [],
             y : [],
             foods : Object,
             contentview : true,
             cartitem : Object,
+            incart : 0,
             tprice : 0,
+            userid : "54e4179f-9993-414c-9285-e226d26666d9",
+            rid : "31323435-0000-0000-0000-000000000000"
         }
     },
     methods: {
-        addToCart(item, rate, quant){
+        addToCart(item){
+            
             var bdata = {
-                "item" : item,
-                "rate" : rate,
-                "quantity": quant
+                "itemid" : item,
+                "userid" : this.userid,
+                "quantity": 1
             };
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -67,37 +70,40 @@ export default {
                 body: raw,
                 redirect: 'follow'
             };
-            fetch("http://localhost:9090/api/cart", requestOptions)
+            fetch("http://localhost:9090/api/mycart/", requestOptions);
             
-            requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-            fetch("http://localhost:9090/api/cart", requestOptions)
+            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
                 .then(response => response.json())
-                .then(result => this.cart = result.length);
+                .then(result => this.cartitem = result);
+
         },
 
         showCart(){
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
+            var bdata = {
+                "rid" : this.rid,
+                "userid" : this.userid
+            };
+            var raw = JSON.stringify(bdata);
             var requestOptions = {
-                method: 'GET',
+                method: 'POST',
+                body: raw,
                 headers: myHeaders,
                 redirect: 'follow'
-            };
-            fetch("http://localhost:9090/api/cart", requestOptions)
+            };            
+            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
                 .then(response => response.json())
                 .then(result => this.cartitem = result);
 
-            this.tprice=0;
+            this.incart = 0;            
             for(let i=0; i<this.cartitem.length; i++)
-                this.tprice += this.cartitem[i].total;
+                this.incart += this.cartitem[i].quant;
 
             if(this.contentview) this.contentview = false;
             else this.contentview = true;
         },
+
         handleScroll() {
             let i=1;
             for(i=1;i<4;i++)
@@ -128,21 +134,29 @@ export default {
             for(i=0;i<(this.y).length;i++)
                 console.log(this.y[i]);
         },
+
         fn2(){
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
+            var bdata = {
+                "rid" : this.rid,
+                "userid" : this.userid
+            };
+            var raw = JSON.stringify(bdata);
             var requestOptions = {
-                method: 'GET',
+                method: 'POST',
+                body: raw,
                 headers: myHeaders,
                 redirect: 'follow'
             };
-            fetch("http://localhost:9090/api/fooddata", requestOptions)
+            fetch("http://localhost:9090/api/menus/getmenu", requestOptions)
                 .then(response => response.json())
                 .then(result => this.foods = result);
-                // .catch(error => console.log('error', error));
-            fetch("http://localhost:9090/api/cart", requestOptions)
+
+            
+            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
                 .then(response => response.json())
-                .then(result => this.cart = result.length);
+                .then(result => this.cartitem = result);
         }
        
     },
@@ -150,8 +164,7 @@ export default {
         this.fn3();
     },
     created() {   
-        this.fn2();
-        this.fn3();    
+        this.fn2();    
         this.handleDebouncedScroll = debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);
     },
@@ -229,8 +242,8 @@ export default {
 
     .rlist{
         width: 100%;
-        position: sticky;
-        top:260px
+        /* position: sticky;
+        top:260px */
     }
 
     .obox{

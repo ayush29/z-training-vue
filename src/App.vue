@@ -36,9 +36,10 @@ export default {
   font-family: Okra,Helvetica,sans-serif;
   font-size: 62.5%;
   font-weight: 300;
-  box-sizing: border-box;
-  margin: auto;
+  /* box-sizing: border-box; */
+  /* margin: auto; */
   padding: 0px;
+  /* margin: 0 240px; */
 
 }
 </style>

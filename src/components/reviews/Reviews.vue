@@ -1,6 +1,6 @@
 <template>
     <dir>
-        <h1>section under maintenance reviews </h1>
+        <h1>section under maintenance Reviews </h1>
     </dir>
 </template>
 

@@ -2,7 +2,7 @@
     <section id="embedHere">
         <!-- emebed html elements here, replace this div dynamically(default:overview)-->
         <div :key="selectedTab">
-            <component :is="Tabs[selectedTab]">{{Tabs[selectedTab]}}</component>
+            <component :is="Tabs[selectedTab]"></component>
         </div>
     </section>
 </template>
@@ -49,6 +49,7 @@ section{
 div{
     display: block;
     justify-content: center;
+    width:100%;
 }
 div, p, span {
     font-size: 1.3rem;
