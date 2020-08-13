@@ -68,18 +68,10 @@ export default {
   },
   methods:{
       viewPhotos(){
-          if(localStorage.isLoggedIn)
-          {
               //switch to photos tab
               eventBus.$emit('action-tab-selection',4);
               //scroll to actions tabs
               eventBus.$emit('scroll-to-about-section');
-              
-          }
-          else
-          {
-              eventBus.$emit('login-modal-event');
-          }
       },
       addPhotos(){
           if(localStorage.isLoggedIn)
@@ -88,9 +80,7 @@ export default {
               eventBus.$emit('action-tab-selection',4);
               //scroll to actions tabs
               eventBus.$emit('scroll-to-about-section');
-              setTimeout(() => {  eventBus.$emit('add-photos-event'); }, 50);
-
-              
+              setTimeout(() => {  eventBus.$emit('add-photos-event'); }, 50); 
           }
           else
           {
