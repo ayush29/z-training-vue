@@ -152,6 +152,7 @@ export default {
       {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
       }
+      eventBus.$on('add-photos-event',()=>{this.showModal();});
     },
     // computed: {
     //     imagesList(){
