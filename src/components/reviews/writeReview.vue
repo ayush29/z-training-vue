@@ -189,7 +189,7 @@ export default {
                 text: this.reviewText,
                 review_tags: this.chosenReviewTags,
             }
-            fetch(`http://localhost:8080/reviews/`, {
+            fetch(`http://localhost:8080/reviews/restaurant/2`, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
@@ -215,6 +215,9 @@ export default {
                 alert("unknown error in write review", error);
             });
             this.reviewText = '';
+            this.chosenReviewTags.forEach(element => {
+                element.chosen = false;
+            });
             this.changeModalRating(0);
             this.closeModal();
         }
