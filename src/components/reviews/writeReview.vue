@@ -189,7 +189,8 @@ export default {
                 text: this.reviewText,
                 review_tags: this.chosenReviewTags,
             }
-            fetch(`http://localhost:8080/reviews/restaurant/2`, {
+            let restaurantId = JSON.parse(localStorage.getItem('selectedRestaurant'));
+            fetch(`http://localhost:8080/reviews/restaurant/${restaurantId}`, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',

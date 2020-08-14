@@ -3,7 +3,8 @@
     <Login/>
     <Header/>
     <!-- <Main/> -->
-    <Resthome/>
+    <!-- <Resthome/> -->
+    <router-view></router-view>
     <Footer/>    
   </div>
 </template>
@@ -13,7 +14,7 @@ import Login from './components/main/Login.vue'
 import Header from './components/main/Header.vue'
 // import Main from './components/main/Main.vue'
 import Footer from './components/main/Footer.vue'
-import Resthome from './components/onlineOrder/RestHome.vue'
+// import Resthome from './components/onlineOrder/RestHome.vue'
 
 export default {
   name: 'App',
@@ -22,7 +23,7 @@ export default {
     Header,
     // Main,
     Footer,
-    Resthome
+    // Resthome
   }
 }
 </script>
