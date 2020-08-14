@@ -1,7 +1,7 @@
 <template>
     <section>
         <section id ="aboutRestro" title="about restaurant">
-            <h1 id="Name">{{restid}}</h1>
+            <h1 id="Name">{{restName}}</h1>
             <section>
                 <div>
                     <a href="https://www.zomato.com/ncr/casual-dining" title="View all Casual Dining in Delhi NCR">Casual Dining</a>
@@ -14,10 +14,12 @@
                     <span>, </span>
                     <a href="https://www.zomato.com/ncr/restaurants/hyderabadi/">Hyderabadi</a>
                 </div>
+                <br>
                 <a href="https://www.zomato.com/ncr/sector-135-restaurants">Sector 135, Noida</a>
             </section>
             <section >
-                <span>Open now</span><span> 10am – 11pm (Today)</span>
+                <br>
+                <span style="color: rgb(244, 162, 102)">Open now</span><span> - 10am – 11pm (Today)</span>
             </section>
         </section>
         <!--add some buttons-->
@@ -25,13 +27,14 @@
             <button type="button" class="reviewButton" @click="addReview">
                 Add Review
             </button>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528" target="_blank" style="z-index: -1;">
-                <button type="button" class="connectButton">
-                    Direction
-                </button>
-            </a>
+            <button type="button" class="connectButton" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528','_blank')">
+                Direction
+            <!-- <span style="z-index: -1;"><a href="https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528" target="_blank" style="z-index: -1;">
+                    <span style="z-index: -1;">Direction</span>
+            </a></span> -->
+            </button>
             <button type="button" class="connectButton" @click="saveBookmark">
-                <span v-if="isBookmarked"> Bookmarked</span>
+                <span v-if="isBookmarked" style="color: red"> Bookmarked</span>
                 <span v-else> Bookmark</span>
             </button>
             <button type="button" class="connectButton">
@@ -49,7 +52,8 @@ export default {
   data(){
       return{
           authenticatedUser: null,
-          isBookmarked: false
+          isBookmarked: false,
+          restName : String
       }
 
   },
@@ -59,7 +63,7 @@ export default {
           if(this.authenticatedUser!= null)
           {
               //todo :hardcoded restro id as 2 for now
-              BookmarkService.find(this.authenticatedUser.id,rrid).then((res)=>{
+              BookmarkService.find(this.authenticatedUser.id,this.rrid).then((res)=>{
                   this.isBookmarked = res.data;
               }).catch(()=>{
                   //doing nothing
@@ -79,12 +83,12 @@ export default {
               //if is bookmarked then delete bookmark else add bookmark
               if(this.isBookmarked)
               {
-                  BookmarkService.delete(this.authenticatedUser.id,rrid); //todo :hardcoded restro id as 2 for now
+                  BookmarkService.delete(this.authenticatedUser.id,this.rrid); //todo :hardcoded restro id as 2 for now
                   this.isBookmarked = false;
               }
               else
               {
-                  BookmarkService.add(this.authenticatedUser.id,rrid);//todo :hardcoded restro id as 2 for now)
+                  BookmarkService.add(this.authenticatedUser.id,this.rrid);//todo :hardcoded restro id as 2 for now)
                   this.isBookmarked = true;
               }
           }
@@ -130,9 +134,9 @@ export default {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
       }
       
-      fetch(`http://localhost:8080/api/restaurants/${this.rid}`)
+      fetch(`http://localhost:8080/api/restaurants/${this.rrid}`)
                 .then(response => response.json())
-                .then(result => this.restid = result.rname);
+                .then(result => this.restName = result.rname);
 
       eventBus.$on('scroll-to-about-section',()=>{
           document.getElementById('aboutRestro').scrollIntoView();
