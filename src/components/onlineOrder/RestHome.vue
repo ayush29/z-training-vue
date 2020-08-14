@@ -1,39 +1,45 @@
 <template>
-    <div></div>
+    <div>
+        <div v-if="rid == 0">
+            <div v-for="restaurant in restaurants" :key="restaurant.id" @click="navto(restaurant.id)" > <h1 class="rest"> {{restaurant.rname}} {{restaurant.rrate}} {{restaurant.rdesc}} </h1></div>
+        </div>
+        <div v-else><Main :rid="rid"/></div>>
+    </div>
 </template>
 
 <script>
+import Main from "../main/Main.vue";
 export default {
-    name : "Rest_home",
+    name : "Resthome",
     components:{
-
+        Main
     },
     data(){
         return {
-            restaurants : Object
+            restaurants : Object,
+            hoveredon : 0,
+            rid : 0
         }
     },
     methods : {
-        
+        navto(id){
+            this.rid = id;
+        },
+        fn2(id){
+            this.hoveredon = id;
+        }
     },
-    created() {
-        var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify(bdata);
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-            
-            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
-                .then(response => response.json())
-                .then(result => this.cartitem = result);
-
+    created() {           
+        fetch(`http://localhost:8080/api/restaurants`)
+            .then(response => response.json())
+            .then(result => this.restaurants = result);
     }
 }
 </script>
 
-<style lang="stylus" scoped>
-
+<style scoped>
+    .rest:hover{
+        background-color : yellow;
+        width: fit-content;
+    }
 </style>

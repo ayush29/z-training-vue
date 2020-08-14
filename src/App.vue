@@ -2,7 +2,8 @@
   <div id="root">
     <Login/>
     <Header/>
-    <Main/>
+    <!-- <Main/> -->
+    <Resthome/>
     <Footer/>    
   </div>
 </template>
@@ -10,21 +11,28 @@
 <script>
 import Login from './components/main/Login.vue'
 import Header from './components/main/Header.vue'
-import Main from './components/main/Main.vue'
+// import Main from './components/main/Main.vue'
 import Footer from './components/main/Footer.vue'
+import Resthome from './components/onlineOrder/RestHome.vue'
 
 export default {
   name: 'App',
   components: {
     Login,
     Header,
-    Main,
-    Footer
+    // Main,
+    Footer,
+    Resthome
   }
 }
 </script>
 
 <style>
+@font-face {
+    font-family: metropolis;
+    src: url(../public/metropolis.regular.otf);
+}
+
 #root {
   /*font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,13 +41,12 @@ export default {
   color: #2c3e50;
   margin-top: 60px;*/
 
-  font-family: Okra,Helvetica,sans-serif;
+  font-family: metropolis, Helvetica, sans-serif;
+  /* font-family: Okra,Helvetica,sans-serif; */
   font-size: 62.5%;
   font-weight: 300;
   /* box-sizing: border-box; */
   /* margin: auto; */
   padding: 0px;
-  /* margin: 0 240px; */
-
 }
 </style>

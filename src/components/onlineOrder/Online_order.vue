@@ -29,7 +29,7 @@
             <tr> <td><h3>Item</h3></td> <td><h3>Quantity</h3></td> <td><h3>Rate</h3></td> <td><h3>Total</h3></td></tr>
             <tr v-for="citem in cartitem" :key="citem.Item_name"><td>{{citem.item_name}}</td> <td>{{citem.quant}}</td> <td>{{citem.rate}}</td> <td>{{citem.tcost}}</td></tr>
              <tr> <td></td> <td></td> <td></td> <td></td></tr>
-            <tr> <td><h3>Total Cost</h3></td> <td>{{incart}}</td> <td>-</td> <td><h3>{{tprice}}</h3></td></tr>
+            <tr> <td><h3>Total</h3></td> <td>{{incart}}</td> <td>-</td> <td><h3>{{tprice}}</h3></td></tr>
         </table>
     </div>
 </div>
@@ -37,8 +37,11 @@
 
 <script>
 import debounce from 'lodash/debounce';
+import rootEventBus from "../EventBus";
+
 export default {
     name: "OnlineOrder",
+    
     data(){
         return {
             cur_nav : 0,
@@ -49,13 +52,24 @@ export default {
             cartitem : Object,
             incart : 0,
             tprice : 0,
-            userid : "54e4179f-9993-414c-9285-e226d26666d9",
-            rid : "31323435-0000-0000-0000-000000000000"
+            userid : 1,
+            rid : this.restid,
         }
+    },
+    props : {
+        restid : Number
     },
     methods: {
         addToCart(item){
-            
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(authenticatedUser === null) {
+                rootEventBus.$emit('login-modal-event');
+                return;
+            }
+            this.userid = authenticatedUser.id;
             var bdata = {
                 "itemid" : item,
                 "userid" : this.userid,
@@ -70,35 +84,37 @@ export default {
                 body: raw,
                 redirect: 'follow'
             };
-            fetch("http://localhost:9090/api/mycart/", requestOptions);
+            fetch("http://localhost:8080/api/mycart/", requestOptions);
             
-            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
+            fetch(`http://localhost:8080/api/usercart/${this.userid}`)
                 .then(response => response.json())
                 .then(result => this.cartitem = result);
 
         },
 
         showCart(){
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var bdata = {
-                "rid" : this.rid,
-                "userid" : this.userid
-            };
-            var raw = JSON.stringify(bdata);
-            var requestOptions = {
-                method: 'POST',
-                body: raw,
-                headers: myHeaders,
-                redirect: 'follow'
-            };            
-            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(authenticatedUser === null) {
+                rootEventBus.$emit('login-modal-event');
+                return;
+            }
+            this.userid = authenticatedUser.id;
+                        
+            fetch(`http://localhost:8080/api/usercart/${this.userid}`)
                 .then(response => response.json())
                 .then(result => this.cartitem = result);
 
-            this.incart = 0;            
+            this.incart = 0;     
+            this.tprice = 0;       
             for(let i=0; i<this.cartitem.length; i++)
+            {
                 this.incart += this.cartitem[i].quant;
+                this.tprice += this.cartitem[i].tcost;
+            }
+            
 
             if(this.contentview) this.contentview = false;
             else this.contentview = true;
@@ -121,40 +137,33 @@ export default {
         },
 
         nav_click(ind){
-            if(!this.contentview) this.contentview = true;
+            if(!this.contentview)
+                this.contentview = true;
             this.cur_nav = ind;
             (this.x[ind]).scrollIntoView();
         },
 
         fn3() {
             this.x = document.getElementsByClassName('obox');
-            let i=0;
-            for(i=0;i<(this.x).length;i++)
+            for(let i=0;i<(this.x).length;i++)
                 (this.y).push(this.x[i].offsetTop);
-            for(i=0;i<(this.y).length;i++)
+            for(let i=0;i<(this.y).length;i++)
                 console.log(this.y[i]);
         },
 
-        fn2(){
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var bdata = {
-                "rid" : this.rid,
-                "userid" : this.userid
-            };
-            var raw = JSON.stringify(bdata);
-            var requestOptions = {
-                method: 'POST',
-                body: raw,
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-            fetch("http://localhost:9090/api/menus/getmenu", requestOptions)
+        fn2(){  
+            fetch(`http://localhost:8080/api/menus/${this.rid}`)
                 .then(response => response.json())
                 .then(result => this.foods = result);
 
-            
-            fetch("http://localhost:9090/api/mycart/usercart", requestOptions)
+            let authenticatedUser = null;
+            if(localStorage.isLoggedIn) {
+                authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+            }
+            if(!(authenticatedUser === null)) {
+                this.userid = authenticatedUser.id;
+            }
+            fetch(`http://localhost:8080/api/usercart/${this.userid}`)
                 .then(response => response.json())
                 .then(result => this.cartitem = result);
         }
@@ -164,7 +173,8 @@ export default {
         this.fn3();
     },
     created() {   
-        this.fn2();    
+        this.fn2();  
+        this.fn3();  
         this.handleDebouncedScroll = debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);
     },
