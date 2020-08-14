@@ -2,7 +2,8 @@
   <div id="root">
     <Login/>
     <Header/>
-    <Main/>
+    <!-- <Main/> -->
+    <Resthome/>
     <Footer/>    
   </div>
 </template>
@@ -10,16 +11,18 @@
 <script>
 import Login from './components/main/Login.vue'
 import Header from './components/main/Header.vue'
-import Main from './components/main/Main.vue'
+// import Main from './components/main/Main.vue'
 import Footer from './components/main/Footer.vue'
+import Resthome from './components/onlineOrder/RestHome.vue'
 
 export default {
   name: 'App',
   components: {
     Login,
     Header,
-    Main,
-    Footer
+    // Main,
+    Footer,
+    Resthome
   }
 }
 </script>
@@ -42,8 +45,8 @@ export default {
   /* font-family: Okra,Helvetica,sans-serif; */
   font-size: 62.5%;
   font-weight: 300;
-  box-sizing: border-box;
-  margin: auto;
+  /* box-sizing: border-box; */
+  /* margin: auto; */
   padding: 0px;
 }
 </style>

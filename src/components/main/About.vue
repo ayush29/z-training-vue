@@ -1,7 +1,7 @@
 <template>
     <section>
         <section id ="aboutRestro" title="about restaurant">
-            <h1 id="Name">Biryani By Kilo</h1>
+            <h1 id="Name">{{restid}}</h1>
             <section>
                 <div>
                     <a href="https://www.zomato.com/ncr/casual-dining" title="View all Casual Dining in Delhi NCR">Casual Dining</a>
@@ -46,10 +46,13 @@ export default {
   name: 'About',
   data(){
       return{
-          authenticatedUser: null
+          authenticatedUser: null,
+          restid : String,
+          rid : this.rrid
       }
 
   },
+  props : {rrid :Number},
   methods: {
       saveBookmark(){
           if(this.authenticatedUser == null){
@@ -93,9 +96,15 @@ export default {
       {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
       }
+      
+      fetch(`http://localhost:8080/api/restaurants/${this.rid}`)
+                .then(response => response.json())
+                .then(result => this.restid = result.rname);
+
       eventBus.$on('scroll-to-about-section',()=>{
           document.getElementById('aboutRestro').scrollIntoView();
       });
+
   }
 }
 </script>
