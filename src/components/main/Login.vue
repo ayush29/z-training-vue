@@ -8,7 +8,7 @@
                 </div>
                 <button id="continueWithGoogle">Continue with Google</button>
                 <hr>
-                <form id="loginForm" @submit="loginSubmit">
+                <form id="loginForm" @submit.prevent="loginSubmit">
                 <input type="text" id="loginEmailInput" v-model="existingUserCred.email" placeholder="Email">
                 <input type="password"  id="loginPasswordInput" v-model="existingUserCred.password" placeholder="******">
                 <input type="submit" value="Login">
@@ -23,7 +23,7 @@
                     <h2>Signup</h2>
                     <span class="close" @click="modalClose">&times;</span>
                 </div>
-                <form id="signupForm" @submit="signupSubmit">
+                <form id="signupForm" @submit.prevent="signupSubmit">
                 <input type="text" id="fullnameInput" v-model="newUser.name" placeholder="Full Name">
                 <input type="text" id="signupEmailInput" v-model="newUser.email" placeholder="Email">
                 <input type="tel" id="signupPhoneInput" v-model="newUser.phone" placeholder="Phone">

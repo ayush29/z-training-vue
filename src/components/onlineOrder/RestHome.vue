@@ -1,22 +1,17 @@
 <template>
     <div>
-        <div  v-if="rid == 0" id = "app1">
+        <div id = "app1">
             <div class = "restplace">
                 <div v-for="restaurant in restaurants" :key="restaurant.id" @click="navto(restaurant.id)" @mouseover="descp = restaurant.rdesc" class="rest"> <h1> {{restaurant.rname}} <span>{{restaurant.rrate}}</span> </h1></div>
             </div>
             <div class = "illutrator"> <h1>{{descp}}</h1></div>
         </div>
-        <div v-else><Main :rid="rid"/></div>>
     </div>
 </template>
 
 <script>
-import Main from "../main/Main.vue";
 export default {
     name : "Resthome",
-    components:{
-        Main
-    },
     data(){
         return {
             restaurants : Object,
@@ -28,16 +23,18 @@ export default {
     methods : {
         navto(id){
             this.rid = id;
+            localStorage.setItem('selectedRestaurant', JSON.stringify(this.rid));
+            this.$router.push({path: `/restaurant/${this.rid}`})
         },
         fn2(id){
             this.hoveredon = id;
         }
     },
-    created() {           
+    created() {
         fetch(`http://localhost:8080/api/restaurants`)
             .then(response => response.json())
             .then(result => this.restaurants = result);
-    }
+    },
 }
 </script>
 

@@ -71,6 +71,7 @@ export default {
                 event.preventDefault();
             });
         });
+        this.$forceUpdate();
     },
 }
 </script>
