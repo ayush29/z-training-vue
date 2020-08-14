@@ -34,7 +34,7 @@
             </a></span> -->
             </button>
             <button type="button" class="connectButton" @click="saveBookmark">
-                <span v-if="isBookmarked" style="color: red"> Bookmarked</span>
+                <span v-if="isBookmarked" style="color: rgb(228, 99, 121)"> Bookmark</span>
                 <span v-else> Bookmark</span>
             </button>
             <button type="button" class="connectButton">
@@ -99,7 +99,7 @@ export default {
           }
           else{
               //switch to reviews tab
-              eventBus.$emit('action-tab-selection',2);
+            //   eventBus.$emit('action-tab-selection',2);
               setTimeout(() => {  eventBus.$emit('clickWriteReviewModal');}, 50);
               
               
@@ -177,16 +177,16 @@ export default {
 }
 .reviewButton{
     border-radius: 0.5rem;
-    margin: 0.5rem 0px 0.5rem 0.5rem;
-    background-color: lightpink;
+    margin: 0.5rem 0.5rem 0.5rem 0px;
+    background-color: rgb(228, 99, 121);
     color: white;
     padding: 0.5rem;
     border-width: 0.5px;
-    border-color: lightpink;
+    border-color: rgb(228, 99, 121);
     cursor: pointer;
 }
 .reviewButton:hover{
-    background-color: rgb(231, 140, 155);
+    background-color: rgb(231, 36, 68);
 }
 .connectButton:hover{
     background-color: rgb(226, 222, 222);

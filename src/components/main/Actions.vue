@@ -30,9 +30,12 @@ export default {
   methods:{
       tabSelected(tabIndex){
           this.selectedTab = tabIndex;
-          eventBus.$emit('action-tab-selection',tabIndex);
+          eventBus.$emit('embed-selected-section',tabIndex);
           eventBus.$emit('scroll-to-about-section');
       }
+  },
+  mounted: function(){
+      eventBus.$on('action-tab-selection',(idx)=>{this.tabSelected(idx);});
   }
 }
 </script>
