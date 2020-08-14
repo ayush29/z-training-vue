@@ -31,7 +31,8 @@
                 </button>
             </a>
             <button type="button" class="connectButton" @click="saveBookmark">
-                Bookmark
+                <span v-if="isBookmarked"> Bookmarked</span>
+                <span v-else> Bookmark</span>
             </button>
             <button type="button" class="connectButton">
                 Share
@@ -42,21 +43,49 @@
 
 <script>
 import eventBus from '../EventBus.js'
+import BookmarkService from '../service/BookmarkService.js'
 export default {
   name: 'About',
   data(){
       return{
-          authenticatedUser: null
+          authenticatedUser: null,
+          isBookmarked: false
       }
 
   },
   methods: {
+      checkBookmark(){
+          if(this.authenticatedUser!= null)
+          {
+              //todo :hardcoded restro id as 2 for now
+              BookmarkService.find(this.authenticatedUser.id,2).then((res)=>{
+                  this.isBookmarked = res.data;
+              }).catch(()=>{
+                  //doing nothing
+                  }); 
+          }
+          else
+          {
+              this.isBookmarked = false;
+          }
+      },
       saveBookmark(){
           if(this.authenticatedUser == null){
               eventBus.$emit('login-modal-event');
           }
           else{
-              alert('Feature coming soon!');
+            //   alert('Feature coming soon!');
+              //if is bookmarked then delete bookmark else add bookmark
+              if(this.isBookmarked)
+              {
+                  BookmarkService.delete(this.authenticatedUser.id,2); //todo :hardcoded restro id as 2 for now
+                  this.isBookmarked = false;
+              }
+              else
+              {
+                  BookmarkService.add(this.authenticatedUser.id,2);//todo :hardcoded restro id as 2 for now)
+                  this.isBookmarked = true;
+              }
           }
       },
       addReview(){
@@ -87,8 +116,14 @@ export default {
     //   else{
     //       this.authenticatedUser = null;
     //   }
-      eventBus.$on('success-auth',(res)=>{this.authenticatedUser = res;});
-      eventBus.$on('logout-event',()=>{this.authenticatedUser = null;});
+      eventBus.$on('success-auth',(res)=>{
+          this.authenticatedUser = res;
+          this.checkBookmark();
+          });
+      eventBus.$on('logout-event',()=>{
+          this.authenticatedUser = null;
+          this.checkBookmark();
+          });
       if(localStorage.isLoggedIn)
       {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
@@ -96,6 +131,7 @@ export default {
       eventBus.$on('scroll-to-about-section',()=>{
           document.getElementById('aboutRestro').scrollIntoView();
       });
+      this.checkBookmark();
   }
 }
 </script>
