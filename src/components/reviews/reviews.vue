@@ -107,7 +107,8 @@ export default {
                     return;
                 }
             }
-            fetch(`http://localhost:8080/reviews/restaurant/2/filter/${this.filterOption}/user/${authenticatedUser.id}/num-reviews`)
+            let restaurantId = JSON.parse(localStorage.getItem('selectedRestaurant'));
+            fetch(`http://localhost:8080/reviews/restaurant/${restaurantId}/filter/${this.filterOption}/user/${authenticatedUser.id}/num-reviews`)
             .then(response => {
                 if(response.ok) {
                     response.json()
@@ -140,7 +141,8 @@ export default {
                     return;
                 }
             }
-            fetch(`http://localhost:8080/reviews/restaurant/2/filter/${this.filterOption}/user/${authenticatedUser.id}/sort/${this.sortOption}/page/${this.curPage}`)
+            let restaurantId = JSON.parse(localStorage.getItem('selectedRestaurant'));
+            fetch(`http://localhost:8080/reviews/restaurant/${restaurantId}/filter/${this.filterOption}/user/${authenticatedUser.id}/sort/${this.sortOption}/page/${this.curPage}`)
             .then(response => {
                 if(response.ok) {
                     response.json()

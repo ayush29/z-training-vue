@@ -86,6 +86,9 @@ export default {
       About,
       Actions,
       Embed
+  },
+  created() {
+    localStorage.setItem('selectedRestaurant', JSON.stringify(this.rid));
   }
 }
 </script>
