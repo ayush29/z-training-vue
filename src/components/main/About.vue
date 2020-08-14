@@ -99,7 +99,7 @@ export default {
           }
           else{
               //switch to reviews tab
-            //   eventBus.$emit('action-tab-selection',2);
+              eventBus.$emit('action-tab-selection',2);
               setTimeout(() => {  eventBus.$emit('clickWriteReviewModal');}, 50);
               
               

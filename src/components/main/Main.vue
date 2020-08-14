@@ -116,6 +116,9 @@ export default {
     margin-left: 5px;
     font-size: 0.7rem;
 }
+#dir a:hover{
+    color: rgb(236, 100, 123);
+}
 #dir span {
     font-size: 0.7rem;
     color: gray;
