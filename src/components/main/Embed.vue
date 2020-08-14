@@ -2,7 +2,7 @@
     <section id="embedHere">
         <!-- emebed html elements here, replace this div dynamically(default:overview)-->
         <div :key="selectedTab">
-            <component :is="Tabs[selectedTab]">{{Tabs[selectedTab]}}</component>
+            <component :is="Tabs[selectedTab]" :restid="rid"></component>
         </div>
     </section>
 </template>
@@ -22,6 +22,7 @@ export default {
           selectedTab: 0
       }
   },
+  props : {rid :Number},
   mounted: function(){
       eventBus.$on('action-tab-selection',(tabIndex)=>{this.selectedTab=tabIndex;});
   },
@@ -49,6 +50,7 @@ export default {
 div{
     display: block;
     justify-content: center;
+    width:100%;
 }
 div, p, span {
     font-size: 1rem;

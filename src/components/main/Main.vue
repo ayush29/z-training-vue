@@ -12,9 +12,11 @@
                 </div>
             </section>
             <Gallery/>
-            <About/>
+             <div class = "topstick">
+            <About :rrid = "rid"/>
             <Actions/>
-            <Embed/>
+            <Embed :rid = "rid"/>
+             </div>
             <div id="relatedInfo">
                 <div>
                     <h4>Related to Biryani By Kilo, Sector 135</h4>
@@ -75,6 +77,10 @@ import Embed from './Embed.vue'
 
 export default {
   name: 'Main',
+    props: {
+    rid : Number
+  },
+
   components:{
       Gallery,
       About,
@@ -87,11 +93,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .main{
-    position: relative;
+    top: 10px;
     max-width: 110rem;
     max-height: initial;
     margin: 1rem 3rem 0px;
 }
+/* .topstick{
+    position: sticky;
+    top: 0;
+    height:max-content;
+} */
 
 #dir{
     padding-top: 10px;

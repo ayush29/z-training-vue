@@ -1,7 +1,7 @@
 <template>
     <section>
         <section id ="aboutRestro" title="about restaurant">
-            <h1 id="Name">Biryani By Kilo</h1>
+            <h1 id="Name">{{restid}}</h1>
             <section>
                 <div>
                     <a href="https://www.zomato.com/ncr/casual-dining" title="View all Casual Dining in Delhi NCR">Casual Dining</a>
@@ -53,12 +53,13 @@ export default {
       }
 
   },
+  props : {rrid :Number},
   methods: {
       checkBookmark(){
           if(this.authenticatedUser!= null)
           {
               //todo :hardcoded restro id as 2 for now
-              BookmarkService.find(this.authenticatedUser.id,2).then((res)=>{
+              BookmarkService.find(this.authenticatedUser.id,rrid).then((res)=>{
                   this.isBookmarked = res.data;
               }).catch(()=>{
                   //doing nothing
@@ -78,12 +79,12 @@ export default {
               //if is bookmarked then delete bookmark else add bookmark
               if(this.isBookmarked)
               {
-                  BookmarkService.delete(this.authenticatedUser.id,2); //todo :hardcoded restro id as 2 for now
+                  BookmarkService.delete(this.authenticatedUser.id,rrid); //todo :hardcoded restro id as 2 for now
                   this.isBookmarked = false;
               }
               else
               {
-                  BookmarkService.add(this.authenticatedUser.id,2);//todo :hardcoded restro id as 2 for now)
+                  BookmarkService.add(this.authenticatedUser.id,rrid);//todo :hardcoded restro id as 2 for now)
                   this.isBookmarked = true;
               }
           }
@@ -128,6 +129,11 @@ export default {
       {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
       }
+      
+      fetch(`http://localhost:8080/api/restaurants/${this.rid}`)
+                .then(response => response.json())
+                .then(result => this.restid = result.rname);
+
       eventBus.$on('scroll-to-about-section',()=>{
           document.getElementById('aboutRestro').scrollIntoView();
       });

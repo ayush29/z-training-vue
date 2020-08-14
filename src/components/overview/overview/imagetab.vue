@@ -11,7 +11,7 @@
         <div style="margin-left: 48%;">
             <button  @click="$emit('close-imagetab')" ><h3> Close </h3></button>
         </div>
-        <form @submit="addImage" style="margin-left: 42%;">
+        <form @submit="addImage" style="margin-left: 42%;" v-show = "isadmin">
             <input type="text" v-model="m_image" name ="image" placeholder="Add image link here ...">
             <input type="submit" value="submit">
         </form>
@@ -23,6 +23,7 @@
 export default {
     props:{
         'menu_image':Array,
+        'isadmin': Boolean,
     }    
     ,
     data(){return{
