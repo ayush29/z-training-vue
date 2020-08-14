@@ -1,20 +1,20 @@
 <template>
     <section id="gallerySection">
         <div class="gallery" >
-            <div width="62.4%" class="galView1">
+            <div width="62.4%" class="galView1 zommer">
                 <div height="100%" width="100%">
                     <img alt="image" :src=images[0]>
                     <!-- "https://b.zmtcdn.com/data/pictures/chains/5/312995/734d388d6aaa9937ff2cfca22aea42df.jpg"> -->
                 </div>
             </div>
             <section class="galView2">
-                <div width="100%" class="galView2a">
+                <div width="100%" class="galView2a zommer" >
                     <div width="100%" height="100%" class="galViewBase">
                         <img alt="image" :src=images[1]>
                         <!-- "https://b.zmtcdn.com/data/pictures/chains/5/312995/85d1e6a7f48b5dc09e4fcafd2152120e.jpg"> -->
                     </div>
                 </div>
-                <div width="100%" class="galView2b">
+                <div width="100%" class="galView2b zommer">
                     <div width="100%" height="100%" class="galViewBase">
                         <img alt="image" :src=images[2]>
                         <!-- "https://b.zmtcdn.com/data/pictures/8/18821448/98c9161ed6d756b9fb2a16515aa74449.jpg"> -->
@@ -22,14 +22,14 @@
                 </div>
             </section>
             <section class="galView3">
-                <div width="100%" class="galView3a" @click="viewPhotos">
+                <div width="100%" class="galView3a zommer" @click="viewPhotos">
                     <div width="100%" height="100%" class="galViewBase">
                         <img alt="image" :src=images[3]>
                         <!-- "https://b.zmtcdn.com/data/pictures/8/18821448/ba2cfa97650efd45b2307afb33813ee2.jpg"> -->
                     </div>
-                    <p class="galView3a1">View Gallery</p>
+                    <p class="galView3a1 zommer">View Gallery</p>
                 </div>
-                <section class="galView3b" @click="addPhotos"><!--set some BG img-->
+                <section class="galView3b zommer" @click="addPhotos"><!--set some BG img-->
                     <section class="galView3b1">
                         <div>
                             <i size="20" color="#FFFFFF">
@@ -97,6 +97,17 @@ export default {
 #gallerySection{
     position: relative; 
 }
+
+zommer img{
+    transform-origin: 55% 55%;
+    transition: transform .3s ease-in;
+    filter: brightness(90%);
+}
+
+.zommer:hover img {
+    transform: scale(1.08);
+    filter: brightness(100%);
+  }
 
 .gallery{
     display: flex;
