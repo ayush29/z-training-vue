@@ -4,7 +4,7 @@
             <Review v-for="rev in reviewsList" :key='rev.id' :rev='rev'/>
         </div>
         <div class="pagination">
-            <div class="page-btn" id="rev-prev-page-btn" @click="reviewsPrevPage">
+            <div class="page-btn" id="rev-prev-page-btn" @click.prevent="reviewsPrevPage">
                 <a href="#" class="arrow">
                     <i class="prev-arrow" color="#1C1C1C" size="20"><svg xmlns="http://www.w3.org/2000/svg"
                                 fill="#1C1C1C" width="20" height="20" viewBox="0 0 20 20"
@@ -26,11 +26,11 @@
             <div class="page-num"
                 v-for="(pageNum, ind) in paginationPages"
                 :key="ind"
-                @click="reviewsNumPage(pageNum)" 
+                @click.prevent="reviewsNumPage(pageNum)" 
                 :class="{'active-page-num': pageNum === curPage}">
                 <a href="#"><span>{{ pageNum }}</span></a>
             </div>
-            <div class="page-btn" id="rev-next-page-btn" @click="reviewsNextPage">
+            <div class="page-btn" id="rev-next-page-btn" @click.prevent="reviewsNextPage">
                 <a href="#" class="arrow">
                     <i class="next-arrow" color="#1C1C1C" size="20"><svg xmlns="http://www.w3.org/2000/svg"
                             fill="#1C1C1C" width="20" height="20" viewBox="0 0 20 20"
@@ -107,7 +107,7 @@ export default {
                     return;
                 }
             }
-            fetch(`http://localhost:8080/reviews/user/${authenticatedUser.id}/filter/${this.filterOption}/num-reviews`)
+            fetch(`http://localhost:8080/reviews/restaurant/2/filter/${this.filterOption}/user/${authenticatedUser.id}/num-reviews`)
             .then(response => {
                 if(response.ok) {
                     response.json()
@@ -140,7 +140,7 @@ export default {
                     return;
                 }
             }
-            fetch(`http://localhost:8080/reviews/user/${authenticatedUser.id}/filter/${this.filterOption}/sort/${this.sortOption}/page/${this.curPage}`)
+            fetch(`http://localhost:8080/reviews/restaurant/2/filter/${this.filterOption}/user/${authenticatedUser.id}/sort/${this.sortOption}/page/${this.curPage}`)
             .then(response => {
                 if(response.ok) {
                     response.json()
@@ -162,9 +162,9 @@ export default {
         checkPageButtons() {
             let prevButton = document.getElementById("rev-prev-page-btn");
             let nextButton = document.getElementById("rev-next-page-btn");
-            if (this.curPage === 1) prevButton.style.visibility = "hidden";
+            if (this.curPage <= 1) prevButton.style.visibility = "hidden";
             else prevButton.style.visibility = "visible";
-            if (this.curPage === this.maxPages) nextButton.style.visibility = "hidden";
+            if (this.curPage >= this.maxPages) nextButton.style.visibility = "hidden";
             else nextButton.style.visibility = "visible";
         },
         reviewsNextPage() {

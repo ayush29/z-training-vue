@@ -3,7 +3,7 @@
         <div class="sc-kMBllD fyERxd">
             <div class="sc-hCbubC ctpOJr">
                 <button v-for="(category) in imageCategories" :key="category.categoryId" class="sc-1kx5g6g-1 dXXDbl sc-hgzKov biDcRr" role="button" tabindex="0" aria-disabled="false" @click="refreshPhotos(category.categoryCode)">
-                    <span tabindex="-1" class="sc-1kx5g6g-2 krzOCY All">
+                    <span tabindex="-1" class="sc-1kx5g6g-2 krzOCY All" :style="tabItemStyle(category.categoryCode)">
                         <span class="sc-1kx5g6g-3 dkwpEa">{{category.categoryName}}</span>
                     </span>
                 </button>
@@ -118,6 +118,22 @@ export default {
       }
     },
     methods: {
+        tabItemStyle(tabcategory) {
+            var style = {};
+            
+            if (tabcategory == (this.CATEGORY)) {
+                // style.fontWeight = 'bold';
+                style.backgroundColor = 'rgb(237, 90, 107)';
+                style.color = 'white';
+                style.borderColor = 'rgb(237, 90, 107)';
+
+
+
+
+            }
+            
+            return style;
+        },
         refreshPhotos(catcode) {
             this.CATEGORY = catcode;
             PhotosDataService.retrieveAllPhotos(this.CATEGORY) //HARDCODED
@@ -342,7 +358,7 @@ export default {
 }
 
 .fyERxd{
-    padding-bottom: 20px;
+    padding-bottom: 0.5%;
 }
 
 .dXXDbl {
@@ -382,11 +398,11 @@ export default {
     white-space: nowrap;
     /* font-size: 1.4rem; */
     font-weight: 300;
-    color: rgb(255, 255, 255);
+    color: black;
     opacity: 1;
-    background: border-box rgb(237, 90, 107);
-    border-color: rgb(237, 90, 107);
-    border-width: 0px;
+    /* background: border-box rgb(237, 90, 107); */
+    border-color: black;
+    border-width: 0.5px;
     border-style: solid;
     border-radius: 0.6rem;
     padding: 0px 1.6rem;
@@ -396,6 +412,8 @@ export default {
 
 .krzOCY:hover {
 background-color: rgb(220, 37, 54);
+border-color: rgb(220, 37, 54);
+color: white;
 }
 
 .dkwpEa {
@@ -496,7 +514,7 @@ background-color: rgb(220, 37, 54);
 
 
 .jbzhIw {
-    margin-top: 3.5rem;
+    margin-top: 0.5rem;
 }
 .jCYPXs {
     position: absolute;
