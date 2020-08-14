@@ -71,7 +71,7 @@ export default {
               //switch to photos tab
               eventBus.$emit('action-tab-selection',4);
               //scroll to actions tabs
-              eventBus.$emit('scroll-to-about-section');
+            //   eventBus.$emit('scroll-to-about-section');
       },
       addPhotos(){
           if(localStorage.isLoggedIn)
@@ -79,7 +79,7 @@ export default {
               //switch to photos tab
               eventBus.$emit('action-tab-selection',4);
               //scroll to actions tabs
-              eventBus.$emit('scroll-to-about-section');
+            //   eventBus.$emit('scroll-to-about-section');
               setTimeout(() => {  eventBus.$emit('add-photos-event'); }, 50); 
           }
           else

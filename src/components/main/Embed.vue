@@ -24,7 +24,7 @@ export default {
   },
   props : {rid :Number},
   mounted: function(){
-      eventBus.$on('action-tab-selection',(tabIndex)=>{this.selectedTab=tabIndex;});
+      eventBus.$on('embed-selected-section',(tabIndex)=>{this.selectedTab=tabIndex;});
   },
   components:{
       OnlineOrder,
