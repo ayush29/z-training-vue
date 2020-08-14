@@ -99,7 +99,7 @@ export default {
     top: 10px;
     max-width: 110rem;
     max-height: initial;
-    margin: 1rem 3rem 0px;
+    margin: 1rem 15rem;
 }
 /* .topstick{
     position: sticky;
