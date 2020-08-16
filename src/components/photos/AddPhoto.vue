@@ -70,7 +70,8 @@ export default {
           ],
           uploadedImage:null,
           uploadCat:'food',
-          userUUID:0
+          userUUID:0,
+          rid:null
     
         
       }
@@ -116,6 +117,7 @@ export default {
                 }
                 this.userUUID = this.authenticatedUser.id;
                 this.uploadedImage.append('category', this.uploadCat);
+                this.uploadedImage.append('restID', this.rid);            
                 this.uploadedImage.append('userID', this.userUUID);
                 PhotosDataService.sendPhoto(this.uploadedImage, config) //HARDCODED
                     .then(result => {
@@ -146,6 +148,8 @@ export default {
     //   else{
     //       this.authenticatedUser = null;
     //   }
+      this.rid = JSON.parse(localStorage.getItem('selectedRestaurant'));
+      
       eventBus.$on('success-auth',(res)=>{this.authenticatedUser = res;});
       eventBus.$on('logout-event',()=>{this.authenticatedUser = null;});
       if(localStorage.isLoggedIn)

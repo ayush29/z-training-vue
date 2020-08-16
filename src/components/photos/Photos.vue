@@ -111,10 +111,8 @@ export default {
           likes:0,
           dislikes:0,
           likeChecked: false,
-          dislikeChecked: false
-
-
-        
+          dislikeChecked: false,
+          rid : null
       }
     },
     methods: {
@@ -136,7 +134,7 @@ export default {
         },
         refreshPhotos(catcode) {
             this.CATEGORY = catcode;
-            PhotosDataService.retrieveAllPhotos(this.CATEGORY) //HARDCODED
+            PhotosDataService.retrieveAllPhotos(this.rid, this.CATEGORY) //HARDCODED
                 .then(response => {
                 this.currentImgList = response.data;
                 // console.log(response.data);
@@ -158,9 +156,6 @@ export default {
             this.getLikes();
             this.getDislikes();
             // alert("Likes:"+ this.likes + ", dislikes:" + this.dislikes);
-
-
-
         },
         getLikes(){
             // this.updateOpenImgData()
@@ -214,8 +209,6 @@ export default {
             this.openImageIndex = (this.openImageIndex<0) ? (this.openImageIndex + this.currentImgList.length) : this.openImageIndex;
             this.popupImage = this.currentImgList[this.openImageIndex].link;
             this.updateOpenImgData();
-            
-            
 
         },
         nextPhoto(){
@@ -244,9 +237,15 @@ export default {
     //     }
     // },
     created() {
+        this.rid = JSON.parse(localStorage.getItem('selectedRestaurant'));
         this.refreshPhotos(this.CATEGORY);
         // this.updateOpenImgData();
+    },
+    mounted(){
+        this.rid = JSON.parse(localStorage.getItem('selectedRestaurant'));
+        this.refreshPhotos(this.CATEGORY);
     }
+    
 
     // watch: {
     //     imagesList{
