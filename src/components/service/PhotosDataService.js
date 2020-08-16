@@ -5,8 +5,8 @@ const PHOTOS_BASE_URL = "http://localhost:8080";
 const PHOTOS_API_URL = `${PHOTOS_BASE_URL}/photos`;
 
 class PhotosDataService {
-  retrieveAllPhotos(CATEGORY) {
-    return axios.get(`${PHOTOS_API_URL}/${CATEGORY}`);
+  retrieveAllPhotos(RESTID, CATEGORY) {
+    return axios.get(`${PHOTOS_API_URL}/${RESTID}/${CATEGORY}`);
   }
 
   retrieveUserDetails(ID) {
