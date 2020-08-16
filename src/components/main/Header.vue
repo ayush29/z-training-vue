@@ -101,7 +101,7 @@ header{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    margin: 0px;
+    margin: 0rem 5rem;
 }
 
 .searchBar{

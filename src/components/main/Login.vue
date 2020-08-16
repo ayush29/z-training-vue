@@ -10,7 +10,9 @@
                 <hr>
                 <form id="loginForm" @submit.prevent="loginSubmit">
                 <input type="text" id="loginEmailInput" v-model="existingUserCred.email" placeholder="Email">
+                <br>
                 <input type="password"  id="loginPasswordInput" v-model="existingUserCred.password" placeholder="******">
+                <br>
                 <input type="submit" value="Login">
                 </form>
                 <hr>
@@ -25,9 +27,13 @@
                 </div>
                 <form id="signupForm" @submit.prevent="signupSubmit">
                 <input type="text" id="fullnameInput" v-model="newUser.name" placeholder="Full Name">
+                <br>
                 <input type="text" id="signupEmailInput" v-model="newUser.email" placeholder="Email">
+                <br>
                 <input type="tel" id="signupPhoneInput" v-model="newUser.phone" placeholder="Phone">
+                <br>
                 <input type="password" id="signupPasswordInput" v-model="newUser.password" placeholder="******">
+                <br>
                 <input type="submit" value="Create Account">
                 </form>
                 <hr>

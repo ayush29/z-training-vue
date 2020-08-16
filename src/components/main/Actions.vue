@@ -1,19 +1,19 @@
 <template>
     <section class="actionNavigator">
-        <div class="actionTab" title="Overview" @click="tabSelected(0)">
-            Overview
+        <div class="actionTab" v-bind:class="{'selected':(selectedTab===0)}" title="Overview" @click="tabSelected(0)">
+            <span>Overview</span>
         </div>
-        <div class="actionTab" title="Order" @click="tabSelected(1)">
-            Order Online
+        <div class="actionTab" v-bind:class="{'selected':(selectedTab===1)}" title="Order" @click="tabSelected(1)">
+            <span>Order Online</span>
         </div>
-        <div class="actionTab" title="Reviews" @click="tabSelected(2)">
-            Reviews
+        <div class="actionTab" v-bind:class="{'selected':(selectedTab===2)}" title="Reviews" @click="tabSelected(2)">
+            <span>Reviews</span>
         </div>
-        <div class="actionTab" title="Menu" @click="tabSelected(3)">
-            Menu
+        <div class="actionTab" v-bind:class="{'selected':(selectedTab===3)}" title="Menu" @click="tabSelected(3)">
+            <span>Menu</span>
         </div>
-        <div class="actionTab" title="Photos" @click="tabSelected(4)">
-            Photos
+        <div class="actionTab" v-bind:class="{'selected':(selectedTab===4)}" title="Photos" @click="tabSelected(4)">
+            <span>Photos</span>
         </div>
     </section>
 </template>
@@ -22,16 +22,35 @@
 import eventBus from '../EventBus.js'
 export default {
   name: 'Actions',
+  data(){
+      return{
+          selectedTab : 0
+      }
+  },
   methods:{
       tabSelected(tabIndex){
-          eventBus.$emit('action-tab-selection',tabIndex);
+          this.selectedTab = tabIndex;
+          eventBus.$emit('embed-selected-section',tabIndex);
+          eventBus.$emit('scroll-to-about-section');
       }
+  },
+  mounted: function(){
+      eventBus.$on('action-tab-selection',(idx)=>{this.tabSelected(idx);});
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.selected{
+    border-bottom-style: solid;
+    border-bottom-color: rgb(228, 99, 121);
+}
+
+.selected span{
+    color: rgb(228, 99, 121);
+}
 .actionNavigator{
     display: flex;
     align-items: left;

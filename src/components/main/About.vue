@@ -1,7 +1,7 @@
 <template>
     <section style="height: fit-content">
         <section id ="aboutRestro" title="about restaurant">
-            <h1 id="Name">{{restid}}</h1>
+            <h1 id="Name">{{restName}}</h1>
             <section>
                 <div>
                     <a href="https://www.zomato.com/ncr/casual-dining" title="View all Casual Dining in Delhi NCR">Casual Dining</a>
@@ -14,10 +14,12 @@
                     <span>, </span>
                     <a href="https://www.zomato.com/ncr/restaurants/hyderabadi/">Hyderabadi</a>
                 </div>
+                <br>
                 <a href="https://www.zomato.com/ncr/sector-135-restaurants">Sector 135, Noida</a>
             </section>
             <section >
-                <span>Open now</span><span> 10am – 11pm (Today)</span>
+                <br>
+                <span style="color: rgb(244, 162, 102)">Open now</span><span> - 10am – 11pm (Today)</span>
             </section>
         </section>
         <!--add some buttons-->
@@ -25,13 +27,15 @@
             <button type="button" class="reviewButton" @click="addReview">
                 Add Review
             </button>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528" target="_blank" style="z-index: -1;">
-                <button type="button" class="connectButton">
-                    Direction
-                </button>
-            </a>
+            <button type="button" class="connectButton" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528','_blank')">
+                Direction
+            <!-- <span style="z-index: -1;"><a href="https://www.google.com/maps/dir/?api=1&destination=28.4963316452,77.4021812528" target="_blank" style="z-index: -1;">
+                    <span style="z-index: -1;">Direction</span>
+            </a></span> -->
+            </button>
             <button type="button" class="connectButton" @click="saveBookmark">
-                Bookmark
+                <span v-if="isBookmarked" style="color: rgb(228, 99, 121)"> Bookmark</span>
+                <span v-else> Bookmark</span>
             </button>
             <button type="button" class="connectButton">
                 Share
@@ -42,24 +46,53 @@
 
 <script>
 import eventBus from '../EventBus.js'
+import BookmarkService from '../service/BookmarkService.js'
 export default {
   name: 'About',
   data(){
       return{
           authenticatedUser: null,
           restid : String,
-          rid : Number
+          rid : Number,
+          isBookmarked: false,
+          restName : String
       }
 
   },
 //   props : {rrid :Number},
   methods: {
+      checkBookmark(){
+          if(this.authenticatedUser!= null)
+          {
+              //todo :hardcoded restro id as 2 for now
+              BookmarkService.find(this.authenticatedUser.id,this.rrid).then((res)=>{
+                  this.isBookmarked = res.data;
+              }).catch(()=>{
+                  //doing nothing
+                  }); 
+          }
+          else
+          {
+              this.isBookmarked = false;
+          }
+      },
       saveBookmark(){
           if(this.authenticatedUser == null){
               eventBus.$emit('login-modal-event');
           }
           else{
-              alert('Feature coming soon!');
+            //   alert('Feature coming soon!');
+              //if is bookmarked then delete bookmark else add bookmark
+              if(this.isBookmarked)
+              {
+                  BookmarkService.delete(this.authenticatedUser.id,this.rrid); //todo :hardcoded restro id as 2 for now
+                  this.isBookmarked = false;
+              }
+              else
+              {
+                  BookmarkService.add(this.authenticatedUser.id,this.rrid);//todo :hardcoded restro id as 2 for now)
+                  this.isBookmarked = true;
+              }
           }
       },
       addReview(){
@@ -90,16 +123,22 @@ export default {
     //   else{
     //       this.authenticatedUser = null;
     //   }
-      eventBus.$on('success-auth',(res)=>{this.authenticatedUser = res;});
-      eventBus.$on('logout-event',()=>{this.authenticatedUser = null;});
+      eventBus.$on('success-auth',(res)=>{
+          this.authenticatedUser = res;
+          this.checkBookmark();
+          });
+      eventBus.$on('logout-event',()=>{
+          this.authenticatedUser = null;
+          this.checkBookmark();
+          });
       if(localStorage.isLoggedIn)
       {
           this.authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
       }
       
-      fetch(`http://localhost:8080/api/restaurants/${this.rid}`)
+      fetch(`http://localhost:8080/api/restaurants/${this.rrid}`)
                 .then(response => response.json())
-                .then(result => this.restid = result.rname);
+                .then(result => this.restName = result.rname);
 
       eventBus.$on('scroll-to-about-section',()=>{
           document.getElementById('aboutRestro').scrollIntoView();
@@ -108,6 +147,7 @@ export default {
   },
   created (){
     this.rid = Number.parseInt(JSON.parse(localStorage.getItem('selectedRestaurant')));
+      this.checkBookmark();
   }
 }
 </script>
@@ -144,16 +184,16 @@ export default {
 }
 .reviewButton{
     border-radius: 0.5rem;
-    margin: 0.5rem 0px 0.5rem 0.5rem;
-    background-color: lightpink;
+    margin: 0.5rem 0.5rem 0.5rem 0px;
+    background-color: rgb(228, 99, 121);
     color: white;
     padding: 0.5rem;
     border-width: 0.5px;
-    border-color: lightpink;
+    border-color: rgb(228, 99, 121);
     cursor: pointer;
 }
 .reviewButton:hover{
-    background-color: rgb(231, 140, 155);
+    background-color: rgb(231, 36, 68);
 }
 .connectButton:hover{
     background-color: rgb(226, 222, 222);
