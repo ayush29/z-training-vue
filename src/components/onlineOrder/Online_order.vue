@@ -4,9 +4,9 @@
         <ul class = 'slist'>
             <li class = 'litem' v-for="foodclass in foods" :key="foodclass.class_id" @click="nav_click(foodclass.class_id)" :class="{ active: (foodclass.class_id==cur_nav) }">{{foodclass.class_name}} ({{foodclass.item.length}})</li>
         </ul>
-        <button class="cart" @click="showCart()" >Cart {{cartitem.length}}</button>
+        <button class="cart" @click="showCart()" >Cart</button>
     </div>
-    <div v-if = "contentview" class = 'rlist'>
+    <div class = 'rlist'>
         <div class = "obox" v-for="foodclass in foods" :key="foodclass.class_id">
           <div class="headline"><h2>{{foodclass.class_name}}</h2></div>
           <div class = "boxxer" v-for="itemm in foodclass.item" :key="itemm.item_id">
@@ -23,15 +23,7 @@
             </div>
           </div>
         </div>
-    </div>
-    <div v-else class = "cartview">
-        <table style = "width:100%">
-            <tr> <td><h3>Item</h3></td> <td><h3>Quantity</h3></td> <td><h3>Rate</h3></td> <td><h3>Total</h3></td></tr>
-            <tr v-for="citem in cartitem" :key="citem.Item_name"><td>{{citem.item_name}}</td> <td>{{citem.quant}}</td> <td>{{citem.rate}}</td> <td>{{citem.tcost}}</td></tr>
-             <tr> <td></td> <td></td> <td></td> <td></td></tr>
-            <tr> <td><h3>Total</h3></td> <td>{{incart}}</td> <td>-</td> <td><h3>{{tprice}}</h3></td></tr>
-        </table>
-    </div>
+    </div> 
 </div>
 </template>
 
@@ -48,16 +40,9 @@ export default {
             x : [],
             y : [],
             foods : Object,
-            contentview : true,
-            cartitem : Object,
-            incart : 0,
-            tprice : 0,
-            userid : 1,
-            rid : this.restid,
+            userid : Number,
+            rid : Number
         }
-    },
-    props : {
-        restid : Number
     },
     methods: {
         addToCart(item){
@@ -102,27 +87,12 @@ export default {
                 return;
             }
             this.userid = authenticatedUser.id;
-                        
-            fetch(`http://localhost:8080/api/usercart/${this.userid}`)
-                .then(response => response.json())
-                .then(result => this.cartitem = result);
-
-            this.incart = 0;     
-            this.tprice = 0;       
-            for(let i=0; i<this.cartitem.length; i++)
-            {
-                this.incart += this.cartitem[i].quant;
-                this.tprice += this.cartitem[i].tcost;
-            }
-            
-
-            if(this.contentview) this.contentview = false;
-            else this.contentview = true;
+            this.$router.push({path: `/mycart/${this.userid}`})
         },
 
         handleScroll() {
             let i=1;
-            for(i=1;i<4;i++)
+            for(i=1;i<this.y.length;i++)
             {
                 let p = window.pageYOffset;
                 console.log(i +" "+ p + ' ' + this.y[i]);
@@ -150,9 +120,13 @@ export default {
             for(let i=0;i<(this.y).length;i++)
                 console.log(this.y[i]);
         },
-
-        fn2(){  
-            fetch(`http://localhost:8080/api/menus/${this.rid}`)
+    },
+    mounted() {
+        this.fn3();
+    },
+    created() {   
+        this.rid = Number.parseInt(JSON.parse(localStorage.getItem('selectedRestaurant')));
+        fetch(`http://localhost:8080/api/menus/${this.rid}`)
                 .then(response => response.json())
                 .then(result => this.foods = result);
 
@@ -163,17 +137,6 @@ export default {
             if(!(authenticatedUser === null)) {
                 this.userid = authenticatedUser.id;
             }
-            fetch(`http://localhost:8080/api/usercart/${this.userid}`)
-                .then(response => response.json())
-                .then(result => this.cartitem = result);
-        }
-       
-    },
-    mounted() {
-        this.fn3();
-    },
-    created() {   
-        this.fn2();  
         this.fn3();  
         this.handleDebouncedScroll = debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);
@@ -216,21 +179,25 @@ export default {
         position: sticky;
         top: 0;
         height: fit-content;
-        width: 22rem;
-        margin-right: 10px;
+        width: max-content;
+        /* margin-right: 10px; */
         border-right: 3px solid;
         border-image:linear-gradient(transparent, rgb(200,200,200), transparent) 2;
     }
 
     li{
         margin: 0px;
-        padding: 0.8rem 2rem;
+        padding: 0.8rem 2rem 0.8rem 0rem;
         font-family: Okra,Helvetica,sans-serif;
         color: rgb(28, 28, 28);
         opacity: 80%;
         font-weight: bolder;
         cursor: pointer;
         justify-content: left;
+    }
+    ui{
+        padding: 0px;
+
     }
 
     .boxxer{

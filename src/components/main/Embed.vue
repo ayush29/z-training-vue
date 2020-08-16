@@ -19,10 +19,11 @@ export default {
   data(){
       return {
           Tabs: [Overview, OnlineOrder, ReviewsContainer, Menu, Photos],
-          selectedTab: 0
+          selectedTab: 0,
+          rid : Number
       }
   },
-  props : {rid :Number},
+//   props : {rid :Number},
   mounted: function(){
       eventBus.$on('action-tab-selection',(tabIndex)=>{this.selectedTab=tabIndex;});
   },
@@ -32,6 +33,9 @@ export default {
       Overview,
       ReviewsContainer,
       Menu
+  },
+  created(){
+      this.rid = Number.parseInt(JSON.parse(localStorage.getItem('selectedRestaurant')));
   }
 }
 </script>

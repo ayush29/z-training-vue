@@ -4,7 +4,7 @@
         <nav class="headerNav">
             <ul class="headerList">
                 <li>
-                    <a href = "https://zomato.com">
+                    <a @click="navto()">
                         <img src="https://b.zmtcdn.com/data/bdddded729eec1881d992117920afa5f1553759845.png" alt="Zomato" >
                     </a>
                 </li>
@@ -45,6 +45,11 @@ export default {
   name: 'Header',
   components:{
       UserAuth
+  },
+    methods :{
+      navto(){
+            this.$router.push({path: `/`});
+        }
   }
 }
 </script>

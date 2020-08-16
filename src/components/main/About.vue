@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section style="height: fit-content">
         <section id ="aboutRestro" title="about restaurant">
             <h1 id="Name">{{restid}}</h1>
             <section>
@@ -48,11 +48,11 @@ export default {
       return{
           authenticatedUser: null,
           restid : String,
-          rid : this.rrid
+          rid : Number
       }
 
   },
-  props : {rrid :Number},
+//   props : {rrid :Number},
   methods: {
       saveBookmark(){
           if(this.authenticatedUser == null){
@@ -105,6 +105,9 @@ export default {
           document.getElementById('aboutRestro').scrollIntoView();
       });
 
+  },
+  created (){
+    this.rid = Number.parseInt(JSON.parse(localStorage.getItem('selectedRestaurant')));
   }
 }
 </script>
@@ -113,8 +116,9 @@ export default {
 <style scoped>
 #aboutRestro {
     position: sticky;
-    position: -webkit-sticky;
-    top: 0%;
+    top: 0;
+    align-self: flex-start;
+    z-index: 3;
     background-color: white;
 }
 #Name{
@@ -124,7 +128,7 @@ export default {
 .restroConnect{
     display: flex;
     align-items: left;
-    z-index: -1;
+    z-index: 0;
     /* justify-content: space-between; */
     justify-items: flex-start;
     margin: 1rem 0px 1rem;

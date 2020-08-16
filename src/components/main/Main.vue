@@ -13,9 +13,9 @@
             </section>
             <Gallery/>
              <div class = "topstick">
-            <About :rrid = "rid"/>
+            <About/>
             <Actions/>
-            <Embed :rid = "rid"/>
+            <Embed/>
              </div>
             <div id="relatedInfo">
                 <div>
@@ -77,9 +77,6 @@ import Embed from './Embed.vue'
 
 export default {
   name: 'Main',
-    props: {
-    rid : Number
-  },
 
   components:{
       Gallery,
@@ -87,9 +84,8 @@ export default {
       Actions,
       Embed
   },
-  created() {
-    localStorage.setItem('selectedRestaurant', JSON.stringify(this.rid));
-  }
+
+
 }
 </script>
 
