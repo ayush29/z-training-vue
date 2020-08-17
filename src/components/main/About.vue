@@ -158,7 +158,7 @@ export default {
     position: sticky;
     top: 0;
     align-self: flex-start;
-    z-index: 3;
+    /* z-index: 3; */
     background-color: white;
 }
 #Name{
