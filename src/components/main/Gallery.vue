@@ -51,11 +51,12 @@ export default {
   name: 'Gallery',
   data(){
       return{
-          images :[]
+          images :[],
+          rid : Number
       }
   },
-  beforeCreate: function(){
-      PhotosDataService.retrieveAllPhotos('all').then((res)=>{
+  mounted: function(){
+      PhotosDataService.retrieveAllPhotos(this.rid,'all').then((res)=>{
           //using first 4 photos for main page gallery
           let photos = res.data;
           for(let i=0;i<4;i++)
@@ -88,6 +89,9 @@ export default {
           }
           
       }
+  },
+  created(){
+      this.rid = Number.parseInt(JSON.parse(localStorage.getItem('selectedRestaurant')));
   }
 }
 </script>
