@@ -229,6 +229,13 @@ export default {
             this.copyRating = newRating;
             this.ratingText = newRatingText;
         });
+        rootEventBus.$on('logout-event', () => {
+            this.reviewText = '';
+            this.chosenReviewTags.forEach(element => {
+                element.chosen = false;
+            });
+            this.changeModalRating(0);
+        });
     }
 }
 </script>
